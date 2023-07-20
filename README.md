@@ -15,7 +15,6 @@ The project must be mounted using docker:
     - Copy the .env.example to .env
     - Run: php artisan key:generate
 
-
 - Web running on http://localhost:8088
 
 
