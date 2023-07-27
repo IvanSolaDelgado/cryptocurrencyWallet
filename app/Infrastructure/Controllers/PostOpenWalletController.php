@@ -4,6 +4,7 @@ namespace App\Infrastructure\Controllers;
 
 use App\Application\DataSources\UserDataSource;
 use App\Application\DataSources\WalletDataSource;
+use App\Http\Requests\OpenWalletRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
@@ -20,15 +21,9 @@ class PostOpenWalletController extends BaseController
         $this->userDataSource = $userDataSource;
         $this->walletDataSource = $walletDataSource;
     }
-    public function __invoke(Request $body): JsonResponse
+    public function __invoke(OpenWalletRequest $request): JsonResponse
     {
-        $validator = Validator::make($body->all(), [
-            'user_id' => 'required|string',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([], Response::HTTP_BAD_REQUEST);
-        }
-        $user = $this->userDataSource->findById($body->input('user_id'));
+        $user = $this->userDataSource->findById($request->input('user_id'));
         if (is_null($user)) {
             return response()->json([
                 'description' => 'A user with the specified ID was not found'

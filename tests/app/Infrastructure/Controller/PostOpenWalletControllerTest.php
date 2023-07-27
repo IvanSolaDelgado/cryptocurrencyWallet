@@ -49,7 +49,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => null]);
 
-        $response->assertBadRequest();
+        $response->assertRedirect();
     }
 
     /**
