@@ -39,7 +39,7 @@ class PostOpenWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function ifBadUserIdThrowsBadRequest()
+    public function ifNotUserIdThrowsBadRequest()
     {
         $this->userDataSource
         ->expects("findById")
@@ -49,7 +49,25 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => null]);
 
-        $response->assertRedirect();
+        $response->assertBadRequest();
+        $response->assertExactJson(['error' => 'Bad Request','message' => 'The user id field is required.']);
+    }
+
+    /**
+     * @test
+     */
+    public function ifBadUserIdThrowsBadRequest()
+    {
+        $this->userDataSource
+            ->expects("findById")
+            ->with(1)
+            ->times(0)
+            ->andReturn(new User(1));
+
+        $response = $this->post('api/wallet/open', ["user_id" => 1]);
+
+        $response->assertBadRequest();
+        $response->assertExactJson(['error' => 'Bad Request','message' => 'The user id must be a string.']);
     }
 
     /**
