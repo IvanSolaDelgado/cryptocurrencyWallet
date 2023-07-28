@@ -31,9 +31,7 @@ class OpenWalletServiceTest extends TestCase
     {
         $this->userDataSource->shouldReceive('findById')->with('123')->andReturn(null);
 
-        $result = $this->openWalletService->openWallet('123');
-
-        $this->assertNull($result);
+        $this->assertNull($this->openWalletService->openWallet('123'));
     }
 
     /**
@@ -44,9 +42,7 @@ class OpenWalletServiceTest extends TestCase
         $this->userDataSource->shouldReceive('findById')->with('1')->andReturn(new User('1'));
         $this->walletDataSource->shouldReceive('saveWalletInCache')->andReturn('wallet_1');
 
-        $result = $this->openWalletService->openWallet('1');
-
-        $this->assertEquals('wallet_1', $result);
+        $this->assertEquals('wallet_1', $this->openWalletService->openWallet('1'));
     }
 
     /**
@@ -57,8 +53,6 @@ class OpenWalletServiceTest extends TestCase
         $this->userDataSource->shouldReceive('findById')->with('2')->andReturn(new User('2'));
         $this->walletDataSource->shouldReceive('saveWalletInCache')->andReturn(null);
 
-        $result = $this->openWalletService->openWallet('2');
-
-        $this->assertNull($result);
+        $this->assertNull($this->openWalletService->openWallet('2'));
     }
 }
