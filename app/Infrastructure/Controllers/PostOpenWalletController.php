@@ -21,6 +21,7 @@ class PostOpenWalletController extends BaseController
         $this->userDataSource = $userDataSource;
         $this->walletDataSource = $walletDataSource;
     }
+
     public function __invoke(OpenWalletRequest $request): JsonResponse
     {
         $user = $this->userDataSource->findById($request->input('user_id'));
