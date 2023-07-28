@@ -2,8 +2,6 @@
 
 namespace App\Infrastructure\Controllers;
 
-use App\Application\DataSources\UserDataSource;
-use App\Application\DataSources\WalletDataSource;
 use App\Application\Services\OpenWalletService;
 use App\Http\Requests\OpenWalletRequest;
 use Illuminate\Http\Response;
