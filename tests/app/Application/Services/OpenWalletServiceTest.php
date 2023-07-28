@@ -39,7 +39,7 @@ class OpenWalletServiceTest extends TestCase
     /**
      * @test
      */
-    public function createsWalletWhenUserExists()
+    public function createsWalletWhenUserExistsAndCacheIsNotFull()
     {
         $this->userDataSource->shouldReceive('findById')->with('1')->andReturn(new User('1'));
         $this->walletDataSource->shouldReceive('saveWalletInCache')->andReturn('wallet_1');
@@ -52,7 +52,7 @@ class OpenWalletServiceTest extends TestCase
     /**
      * @test
      */
-    public function returnsNullWhenCacheIsFull()
+    public function returnsNullWhenUserExistsAndCacheIsFull()
     {
         $this->userDataSource->shouldReceive('findById')->with('2')->andReturn(new User('2'));
         $this->walletDataSource->shouldReceive('saveWalletInCache')->andReturn(null);
