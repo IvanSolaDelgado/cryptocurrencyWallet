@@ -2,8 +2,8 @@
 
 namespace Tests\app\Application\Services;
 
-use App\Application\DataSources\UserDataSource;
-use App\Application\DataSources\WalletDataSource;
+use App\Domain\DataSources\UserDataSource;
+use App\Domain\DataSources\WalletDataSource;
 use App\Application\Services\OpenWalletService;
 use App\Domain\User;
 use Mockery;
@@ -15,6 +15,9 @@ class OpenWalletServiceTest extends TestCase
     private WalletDataSource $walletDataSource;
     private OpenWalletService $openWalletService;
 
+    /**
+     * @setUp
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -29,9 +32,10 @@ class OpenWalletServiceTest extends TestCase
      */
     public function returnsNullWhenUserNotFound()
     {
-        $this->userDataSource->shouldReceive('findById')->with('123')->andReturn(null);
+        $this->userDataSource->shouldReceive('findById')->with('123')->andReturnNull();
+        $this->walletDataSource->shouldReceive('saveWalletInCache')->never();
 
-        $this->assertNull($this->openWalletService->openWallet('123'));
+        $this->openWalletService->createWallet('123');
     }
 
     /**
@@ -42,7 +46,7 @@ class OpenWalletServiceTest extends TestCase
         $this->userDataSource->shouldReceive('findById')->with('1')->andReturn(new User('1'));
         $this->walletDataSource->shouldReceive('saveWalletInCache')->andReturn('wallet_1');
 
-        $this->assertEquals('wallet_1', $this->openWalletService->openWallet('1'));
+        $this->assertEquals('wallet_1', $this->openWalletService->createWallet('1'));
     }
 
     /**
@@ -53,6 +57,6 @@ class OpenWalletServiceTest extends TestCase
         $this->userDataSource->shouldReceive('findById')->with('2')->andReturn(new User('2'));
         $this->walletDataSource->shouldReceive('saveWalletInCache')->andReturn(null);
 
-        $this->assertNull($this->openWalletService->openWallet('2'));
+        $this->assertNull($this->openWalletService->createWallet('2'));
     }
 }

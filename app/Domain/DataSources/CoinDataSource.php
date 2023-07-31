@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\DataSources;
+namespace App\Domain\DataSources;
 
 use App\Domain\Coin;
 

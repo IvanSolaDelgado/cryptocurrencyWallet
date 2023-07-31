@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Persistence;
 
-use App\Application\DataSources\WalletDataSource;
 use App\Domain\Coin;
+use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use Illuminate\Support\Facades\Cache;
 

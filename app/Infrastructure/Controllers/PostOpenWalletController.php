@@ -10,16 +10,10 @@ use Illuminate\Routing\Controller as BaseController;
 
 class PostOpenWalletController extends BaseController
 {
-    private OpenWalletService $openWalletService;
-
-    public function __construct(OpenWalletService $openWalletService)
-    {
-        $this->openWalletService = $openWalletService;
-    }
-    public function __invoke(OpenWalletRequest $request): JsonResponse
+    public function __invoke(OpenWalletRequest $request, OpenWalletService $openWalletService): JsonResponse
     {
         $userId = $request->input('user_id');
-        $walletId = $this->openWalletService->openWallet($userId);
+        $walletId = $openWalletService->createWallet($userId);
 
         if (is_null($walletId)) {
             return response()->json([

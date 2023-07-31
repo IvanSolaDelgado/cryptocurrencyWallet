@@ -2,9 +2,9 @@
 
 namespace Tests\app\Infrastructure\Controller;
 
-use App\Application\DataSources\WalletDataSource;
-use App\Domain\Wallet;
 use App\Domain\Coin;
+use App\Domain\DataSources\WalletDataSource;
+use App\Domain\Wallet;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Tests\TestCase;

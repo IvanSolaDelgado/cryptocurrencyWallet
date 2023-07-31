@@ -2,9 +2,8 @@
 
 namespace Tests\app\Application\DataSources;
 
-use App\Application\DataSources\CoinDataSource;
 use App\Domain\Coin;
-use App\Domain\Wallet;
+use App\Domain\DataSources\CoinDataSource;
 use App\Infrastructure\Persistence\FileWalletDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;

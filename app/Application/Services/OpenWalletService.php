@@ -2,8 +2,8 @@
 
 namespace App\Application\Services;
 
-use App\Application\DataSources\UserDataSource;
-use App\Application\DataSources\WalletDataSource;
+use App\Domain\DataSources\UserDataSource;
+use App\Domain\DataSources\WalletDataSource;
 
 class OpenWalletService
 {
@@ -16,7 +16,7 @@ class OpenWalletService
         $this->walletDataSource = $walletDataSource;
     }
 
-    public function openWallet(string $userId): ?string
+    public function createWallet(string $userId): ?string
     {
         $user = $this->userDataSource->findById($userId);
         if (is_null($user)) {
