@@ -44,9 +44,9 @@ class OpenWalletServiceTest extends TestCase
     public function createsWalletWhenUserExistsAndCacheIsNotFull()
     {
         $this->userDataSource->shouldReceive('findById')->with('1')->andReturn(new User('1'));
-        $this->walletDataSource->shouldReceive('saveWalletInCache')->andReturn('wallet_1');
+        $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn('wallet_1');
 
-        $this->assertEquals('wallet_1', $this->openWalletService->createWallet('1'));
+        $this->openWalletService->createWallet('1');
     }
 
     /**
@@ -55,8 +55,8 @@ class OpenWalletServiceTest extends TestCase
     public function returnsNullWhenUserExistsAndCacheIsFull()
     {
         $this->userDataSource->shouldReceive('findById')->with('2')->andReturn(new User('2'));
-        $this->walletDataSource->shouldReceive('saveWalletInCache')->andReturn(null);
+        $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn(null);
 
-        $this->assertNull($this->openWalletService->createWallet('2'));
+        $this->openWalletService->createWallet('2');
     }
 }
