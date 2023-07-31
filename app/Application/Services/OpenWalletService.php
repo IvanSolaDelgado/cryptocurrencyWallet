@@ -26,7 +26,7 @@ class OpenWalletService
             }
 
             return $this->walletDataSource->saveWalletInCache();
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             return null;
         }
     }
