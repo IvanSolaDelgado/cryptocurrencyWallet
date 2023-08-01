@@ -15,7 +15,6 @@ class PostOpenWalletControllerTest extends TestCase
     {
         parent::setUp();
         $this->userDataSource = Mockery::mock(UserDataSource::class);
-        $this->walletD = Mockery::mock(UserDataSource::class);
         $this->app->bind(UserDataSource::class, function () {
             return $this->userDataSource;
         });
