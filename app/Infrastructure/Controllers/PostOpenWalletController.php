@@ -22,9 +22,9 @@ class PostOpenWalletController extends BaseController
         $this->walletDataSource = $walletDataSource;
     }
 
-    public function __invoke(OpenWalletRequest $request): JsonResponse
+    public function __invoke(OpenWalletRequest $openWalletRequest): JsonResponse
     {
-        $user = $this->userDataSource->findById($request->input('user_id'));
+        $user = $this->userDataSource->findById($openWalletRequest->input('user_id'));
         if (is_null($user)) {
             return response()->json([
                 'description' => 'A user with the specified ID was not found'
