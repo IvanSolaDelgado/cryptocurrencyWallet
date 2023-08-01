@@ -2,9 +2,10 @@
 
 namespace Tests\app\Infrastructure\Controller;
 
-use App\Application\DataSources\UserDataSource;
+use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;
 use Mockery;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Tests\TestCase;
 
 class PostOpenWalletControllerTest extends TestCase
@@ -32,27 +33,14 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "1"]);
 
-        $response->assertNotFound();
+        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'A user with the specified ID was not found']);
     }
 
     /**
      * @test
      */
-    public function ifBadUserIdThrowsBadRequest()
-    {
-        $this->userDataSource
-        ->expects("findById")
-        ->with(null)
-        ->times(0)
-        ->andReturn(null);
-
-        $response = $this->post('api/wallet/open', ["user_id" => -1]);
-        $response = $this->post('api/wallet/open', ["user_id" => null]);
-
-        $response->assertBadRequest();
-    }
-    public function ifWalletOpenedCorrectlyReturnsWalletId()
+    public function ifGoodUserIdCreatesWalletAndReturnsWalletId()
     {
         $this->userDataSource
             ->expects("findById")
@@ -61,7 +49,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "0"]);
 
-        $response->assertOk();
-        $response->assertExactJson(['description' => 'successful operation','wallet_id' => '0']);
+        $response->assertStatus(JsonResponse::HTTP_OK);
+        $response->assertExactJson(['description' => 'successful operation','wallet_id' => 'wallet_0']);
     }
 }

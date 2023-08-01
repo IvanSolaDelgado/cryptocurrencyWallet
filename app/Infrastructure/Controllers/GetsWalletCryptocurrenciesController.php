@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Controllers;
 
-use App\Application\DataSources\WalletDataSource;
-use Illuminate\Http\Response;
+use App\Domain\DataSources\WalletDataSource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;

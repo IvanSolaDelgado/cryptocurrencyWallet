@@ -1,9 +1,9 @@
-name: PHPUnit Tests
+name: Quality Assurance
 
 on: [push, pull_request]
 
 jobs:
-  phpunit:
+  Prepare_and_run_tests:
     runs-on: ubuntu-latest
 
     steps:
