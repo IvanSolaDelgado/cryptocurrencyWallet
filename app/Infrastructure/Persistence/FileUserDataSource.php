@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Persistence;
 
-use App\Application\DataSources\UserDataSource;
+use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;
 
 class FileUserDataSource implements UserDataSource
 {
     public function findById(string $userId): ?User
     {
-        return new User(0);
+        return new User(1);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Providers;
 
-use App\Application\DataSources\CoinDataSource;
-use App\Application\DataSources\UserDataSource;
-use App\Application\DataSources\WalletDataSource;
+use App\Domain\DataSources\CoinDataSource;
+use App\Domain\DataSources\UserDataSource;
+use App\Domain\DataSources\WalletDataSource;
 use App\Infrastructure\Persistence\FileCoinDataSource;
 use App\Infrastructure\Persistence\FileUserDataSource;
 use App\Infrastructure\Persistence\FileWalletDataSource;

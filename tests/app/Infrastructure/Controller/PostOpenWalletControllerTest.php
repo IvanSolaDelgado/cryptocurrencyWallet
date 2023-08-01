@@ -2,7 +2,7 @@
 
 namespace Tests\app\Infrastructure\Controller;
 
-use App\Application\DataSources\UserDataSource;
+use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;
 use Mockery;
 use Tests\TestCase;

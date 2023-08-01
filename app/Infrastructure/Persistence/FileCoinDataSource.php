@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Persistence;
 
-use App\Application\DataSources\CoinDataSource;
 use App\Domain\Coin;
+use App\Domain\DataSources\CoinDataSource;
 
 class FileCoinDataSource implements CoinDataSource
 {
