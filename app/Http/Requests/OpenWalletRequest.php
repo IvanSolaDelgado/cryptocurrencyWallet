@@ -10,14 +10,6 @@ use Illuminate\Http\JsonResponse;
 class OpenWalletRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    /**
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
