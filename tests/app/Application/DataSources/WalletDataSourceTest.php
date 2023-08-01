@@ -4,6 +4,7 @@ namespace Tests\app\Application\DataSources;
 
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
+use App\Domain\DataSources\WalletDataSource;
 use App\Infrastructure\Persistence\FileWalletDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
@@ -20,6 +21,33 @@ class WalletDataSourceTest extends TestCase
         $this->app->bind(CoinDataSource::class, function () {
             return $this->coinDataSource;
         });
+    }
+
+    /**
+     * @test
+     */
+    public function whenCacheIsNotFullSavesWalletInCache()
+    {
+        $walletDataSource = new FileWalletDataSource();
+
+        Cache::shouldReceive('has')->andReturn(false);
+        Cache::shouldReceive('put')
+            ->once()
+            ->with('wallet_0', Mockery::type('array'));
+
+        $this->assertEquals('wallet_0', $walletDataSource->saveWalletInCache());
+    }
+
+    /**
+     * @test
+     */
+    public function whenCacheIsFullReturnsNull()
+    {
+        $walletDataSource = new FileWalletDataSource();
+
+        Cache::shouldReceive('has')->andReturn(true);
+
+        $this->assertEquals(null, $walletDataSource->saveWalletInCache());
     }
 
     /**
