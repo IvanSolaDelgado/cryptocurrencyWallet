@@ -4,6 +4,9 @@ namespace App\Infrastructure\Controllers;
 
 use App\Application\Services\OpenWalletService;
 use App\Http\Requests\OpenWalletRequest;
+use App\Application\DataSources\UserDataSource;
+use App\Application\DataSources\WalletDataSource;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
