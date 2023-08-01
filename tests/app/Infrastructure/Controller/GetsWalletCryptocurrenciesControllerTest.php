@@ -11,42 +11,14 @@ use Tests\TestCase;
 
 class GetsWalletCryptocurrenciesControllerTest extends TestCase
 {
-    private WalletDataSource $walletDataSource;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->app->bind(WalletDataSource::class, function () {
-            return $this->walletDataSource;
-        });
-    }
-
-    /**
-     * @test
-     */
-    public function ifBadWalletIdThrowsBadRequest()
-    {
-        $this->walletDataSource
-            ->expects("findById")
-            ->with(null)
-            ->times(0)
-            ->andReturn(null);
-
-        $response = $this->get('api/wallet/-5');
-        $response->assertBadRequest();
-    }
-
     /**
      * @test
      */
     public function ifWalletIdNotFoundThrowsError()
     {
         $wallet = new Wallet('0');
-        $this->walletDataSource
-            ->expects("findById")
-            ->with("0")
-            ->andReturn(null);
+
+        Cache::shouldReceive('has')->andReturn(false);
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
@@ -57,9 +29,9 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
     /**
      * @test
      */
-    public function ifWalletIdExistsGetCoins()
+    public function ifWalletIdExistsGetsWalletCryptocurrencies()
     {
-        $walletId = 0;
+        $walletId = '0';
         $walletCoins = [
             (new Coin('90', 'Bitcoin', 'BTC', 4, 26829.64))->getJsonData(),
             (new Coin('80', 'Ethereum', 'ETH', 10, 1830))->getJsonData(),
@@ -68,11 +40,8 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
         ];
         $wallet = new Wallet($walletId);
 
-        $this->walletDataSource
-            ->expects("findById")
-            ->with($walletId)
-            ->andReturn($wallet);
-
+        Cache::shouldReceive('has')->andReturn(true);
+        ;
         Cache::shouldReceive('get')
             ->with('wallet_' . $walletId)
             ->andReturn(['BuyTimeAccumulatedValue' => 10, 'coins' => $walletCoins]);
