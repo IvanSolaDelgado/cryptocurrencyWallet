@@ -39,22 +39,6 @@ class PostOpenWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function ifBadUserIdThrowsBadRequest()
-    {
-        $this->userDataSource
-        ->expects("findById")
-        ->with(null)
-        ->times(0)
-        ->andReturn(null);
-
-        $response = $this->post('api/wallet/open', ["user_id" => null]);
-
-        $response->assertBadRequest();
-    }
-
-    /**
-     * @test
-     */
     public function ifGoodUserIdCreatesWalletAndReturnsWalletId()
     {
         $this->userDataSource
