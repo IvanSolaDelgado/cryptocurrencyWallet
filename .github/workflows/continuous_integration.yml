@@ -3,7 +3,7 @@ name: Quality Assurance
 on: [push, pull_request]
 
 jobs:
-  quality-check:
+  Prepare_and_run_tests:
     runs-on: ubuntu-latest
 
     steps:
