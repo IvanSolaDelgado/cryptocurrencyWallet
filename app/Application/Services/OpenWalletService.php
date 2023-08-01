@@ -19,15 +19,11 @@ class OpenWalletService
 
     public function createWallet(string $userId): ?string
     {
-        try {
-            $user = $this->userDataSource->findById($userId);
-            if (is_null($user)) {
-                throw new Exception('User not found.');
-            }
-
-            return $this->walletDataSource->saveWalletInCache();
-        } catch (Exception $exception) {
+        $user = $this->userDataSource->findById($userId);
+        if (is_null($user)) {
             return null;
         }
+
+        return $this->walletDataSource->saveWalletInCache();
     }
 }
