@@ -18,12 +18,6 @@ class PostOpenWalletController extends BaseController
         $userId = $openWalletRequest->input('user_id');
         $walletId = $openWalletService->createWallet($userId);
 
-        if (is_null($walletId)) {
-            return response()->json([
-                'description' => 'A user with the specified ID was not found'
-            ], Response::HTTP_NOT_FOUND);
-        }
-
         if ($walletId) {
             return response()->json([
                 'description' => 'successful operation',

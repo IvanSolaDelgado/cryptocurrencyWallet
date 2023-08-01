@@ -6,6 +6,7 @@ use App\Domain\DataSources\UserDataSource;
 use App\Domain\DataSources\WalletDataSource;
 use App\Application\Services\OpenWalletService;
 use App\Domain\User;
+use App\Infrastructure\Exceptions\UserNotFoundException;
 use Mockery;
 use Tests\TestCase;
 
@@ -34,6 +35,8 @@ class OpenWalletServiceTest extends TestCase
     {
         $this->userDataSource->shouldReceive('findById')->with('123')->andReturnNull();
         $this->walletDataSource->shouldReceive('saveWalletInCache')->never();
+
+        $this->expectException(UserNotFoundException::class);
 
         $this->openWalletService->createWallet('123');
     }
