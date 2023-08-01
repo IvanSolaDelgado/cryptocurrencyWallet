@@ -5,6 +5,7 @@ namespace Tests\app\Infrastructure\Controller;
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;
 use Mockery;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Tests\TestCase;
 
 class PostOpenWalletControllerTest extends TestCase
@@ -32,7 +33,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "1"]);
 
-        $response->assertNotFound();
+        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'A user with the specified ID was not found']);
     }
 
@@ -48,7 +49,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "0"]);
 
-        $response->assertOk();
+        $response->assertStatus(JsonResponse::HTTP_OK);
         $response->assertExactJson(['description' => 'successful operation','wallet_id' => 'wallet_0']);
     }
 }
