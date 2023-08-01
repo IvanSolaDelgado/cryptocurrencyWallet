@@ -24,6 +24,11 @@ class OpenWalletService
             return null;
         }
 
-        return $this->walletDataSource->saveWalletInCache();
+        $walletId = $this->walletDataSource->saveWalletInCache();
+        if ($walletId === null) {
+            return 'Cache is full';
+        }
+
+        return $walletId;
     }
 }

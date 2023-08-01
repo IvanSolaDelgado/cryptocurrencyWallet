@@ -24,7 +24,7 @@ class PostOpenWalletController extends BaseController
             ], Response::HTTP_NOT_FOUND);
         }
 
-        if ($walletId) {
+        if ($walletId != "Cache is full") {
             return response()->json([
                 'description' => 'successful operation',
                 'wallet_id' => str($walletId)
