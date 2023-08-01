@@ -3,11 +3,11 @@
 namespace App\Infrastructure\Controllers;
 
 use App\Domain\DataSources\WalletDataSource;
+use App\Validators\WalletIdValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Validator;
 
 class GetsWalletCryptocurrenciesController extends BaseController
 {
@@ -19,14 +19,10 @@ class GetsWalletCryptocurrenciesController extends BaseController
     }
     public function __invoke($wallet_id): JsonResponse
     {
-        $wallet_id = intval($wallet_id);
-        $validator = Validator::make(['wallet_id' => $wallet_id], [
-            'wallet_id' => 'required|int|min:0',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([], Response::HTTP_BAD_REQUEST);
+        if (!WalletIdValidator::validateWalletId($wallet_id)) {
+            return response()->json(['error' => 'Bad Request',
+                'message' => 'The wallet id must be an integer'], Response::HTTP_BAD_REQUEST);
         }
-
         if (is_null($this->walletDataSource->findById($wallet_id))) {
             return response()->json([
                 'description' => 'A wallet with the specified ID was not found'
