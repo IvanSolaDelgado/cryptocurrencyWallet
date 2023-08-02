@@ -6,8 +6,8 @@ use Exception;
 
 class UserNotFoundException extends Exception
 {
-    public function __construct(string $message = 'User not found')
+    public function __construct()
     {
-        parent::__construct($message);
+        parent::__construct('User not found', 200);
     }
 }

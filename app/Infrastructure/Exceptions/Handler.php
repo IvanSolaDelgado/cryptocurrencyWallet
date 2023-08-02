@@ -44,18 +44,18 @@ class Handler extends ExceptionHandler
 
     /**
      * @param Request $request
-     * @param Throwable $userNotFoundExcepction
+     * @param Throwable $genericException
      * @return Response
      * @throws Throwable
      */
-    public function render($request, Throwable $userNotFoundExcepction): Response
+    public function render($request, Throwable $genericException): Response
     {
-        if ($userNotFoundExcepction instanceof UserNotFoundException) {
+        if ($genericException instanceof UserNotFoundException) {
             return response()->json([
                 'description' => 'A user with the specified ID was not found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return parent::render($request, $userNotFoundExcepction);
+        return parent::render($request, $genericException);
     }
 }
