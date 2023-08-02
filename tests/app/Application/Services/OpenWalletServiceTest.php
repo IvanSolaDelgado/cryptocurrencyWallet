@@ -55,7 +55,7 @@ class OpenWalletServiceTest extends TestCase
     public function returnsNullWhenUserExistsAndCacheIsFull()
     {
         $this->userDataSource->shouldReceive('findById')->with('2')->andReturn(new User('2'));
-        $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn(null);
+        $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn('Cache is full');
 
         $this->openWalletService->createWallet('2');
     }
