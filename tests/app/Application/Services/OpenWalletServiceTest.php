@@ -31,7 +31,7 @@ class OpenWalletServiceTest extends TestCase
     /**
      * @test
      */
-    public function returnsNullWhenUserNotFound()
+    public function throwsErrorIfUserNotFound()
     {
         $this->userDataSource->shouldReceive('findById')->with('123')->andReturnNull();
         $this->walletDataSource->shouldReceive('saveWalletInCache')->never();
