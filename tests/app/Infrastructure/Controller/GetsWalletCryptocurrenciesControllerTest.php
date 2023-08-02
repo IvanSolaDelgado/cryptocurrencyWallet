@@ -14,7 +14,7 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
     /**
      * @test
      */
-    public function returnsNotFoundMessageWhenWalletDoesNotExist()
+    public function walletIdWasNotFoundIfWalletDoesNotExists()
     {
         $wallet = new Wallet('0');
 
