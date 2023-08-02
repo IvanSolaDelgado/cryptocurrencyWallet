@@ -37,6 +37,7 @@ class OpenWalletServiceTest extends TestCase
         $this->walletDataSource->shouldReceive('saveWalletInCache')->never();
 
         $this->expectException(UserNotFoundException::class);
+        $this->expectExceptionMessage('User not found');
 
         $this->openWalletService->createWallet('123');
     }

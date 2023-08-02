@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
     {
         if ($genericException instanceof UserNotFoundException) {
             return response()->json([
-                'description' => 'A user with the specified ID was not found'
+                'description' => $genericException->getMessage()
             ], Response::HTTP_NOT_FOUND);
         }
 
