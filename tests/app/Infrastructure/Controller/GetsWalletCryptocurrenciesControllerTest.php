@@ -14,7 +14,7 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
     /**
      * @test
      */
-    public function ifWalletIdNotFoundThrowsError()
+    public function returnsNotFoundMessageWhenWalletDoesNotExist()
     {
         $wallet = new Wallet('0');
 
@@ -29,7 +29,7 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
     /**
      * @test
      */
-    public function ifWalletIdExistsGetsWalletCryptocurrencies()
+    public function returnsWalletCryptocurrenciesWhenWalletExists()
     {
         $walletId = '0';
         $walletCoins = [
@@ -41,7 +41,6 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
         $wallet = new Wallet($walletId);
 
         Cache::shouldReceive('has')->andReturn(true);
-        ;
         Cache::shouldReceive('get')
             ->with('wallet_' . $walletId)
             ->andReturn(['BuyTimeAccumulatedValue' => 10, 'coins' => $walletCoins]);
