@@ -26,7 +26,7 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function doesNotFindAWalletIfWalletDoesNotExist()
+    public function returnsNullWhenWalletIdDoesNotExist()
     {
         $walletDataSource = new FileWalletDataSource();
 
@@ -38,7 +38,7 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function findAWalletIfWalletExists()
+    public function returnsWalletWhenWalletIdExists()
     {
         $walletDataSource = new FileWalletDataSource();
 
