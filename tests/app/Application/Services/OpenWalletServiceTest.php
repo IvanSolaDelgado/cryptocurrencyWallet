@@ -2,10 +2,10 @@
 
 namespace Tests\app\Application\Services;
 
+use App\Application\Exceptions\UserNotFoundException;
 use App\Application\Services\OpenWalletService;
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\DataSources\WalletDataSource;
-use App\Domain\Exceptions\UserNotFoundException;
 use App\Domain\User;
 use Mockery;
 use Tests\TestCase;
