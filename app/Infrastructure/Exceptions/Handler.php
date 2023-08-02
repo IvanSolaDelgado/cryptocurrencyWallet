@@ -2,7 +2,10 @@
 
 namespace App\Infrastructure\Exceptions;
 
+use App\Application\Exceptions\UserNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -36,5 +39,22 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * @param Request $request
+     * @param Throwable $exception
+     * @return Response
+     * @throws Throwable
+     */
+    public function render($request, Throwable $exception): Response
+    {
+        if ($exception instanceof UserNotFoundException) {
+            return response()->json([
+                'description' => $exception->getMessage()
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return parent::render($request, $exception);
     }
 }

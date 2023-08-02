@@ -2,9 +2,10 @@
 
 namespace Tests\app\Application\Services;
 
+use App\Application\Exceptions\UserNotFoundException;
+use App\Application\Services\OpenWalletService;
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\DataSources\WalletDataSource;
-use App\Application\Services\OpenWalletService;
 use App\Domain\User;
 use Mockery;
 use Tests\TestCase;
@@ -35,6 +36,9 @@ class OpenWalletServiceTest extends TestCase
         $this->userDataSource->shouldReceive('findById')->with('123')->andReturnNull();
         $this->walletDataSource->shouldReceive('saveWalletInCache')->never();
 
+        $this->expectException(UserNotFoundException::class);
+        $this->expectExceptionMessage('User not found');
+
         $this->openWalletService->createWallet('123');
     }
 
@@ -55,7 +59,7 @@ class OpenWalletServiceTest extends TestCase
     public function returnsNullWhenUserExistsAndCacheIsFull()
     {
         $this->userDataSource->shouldReceive('findById')->with('2')->andReturn(new User('2'));
-        $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn(null);
+        $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn('Cache is full');
 
         $this->openWalletService->createWallet('2');
     }

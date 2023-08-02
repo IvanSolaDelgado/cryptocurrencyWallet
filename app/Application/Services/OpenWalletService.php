@@ -2,9 +2,9 @@
 
 namespace App\Application\Services;
 
+use App\Application\Exceptions\UserNotFoundException;
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\DataSources\WalletDataSource;
-use Exception;
 
 class OpenWalletService
 {
@@ -17,13 +17,21 @@ class OpenWalletService
         $this->walletDataSource = $walletDataSource;
     }
 
+    /**
+     * @throws UserNotFoundException
+     */
     public function createWallet(string $userId): ?string
     {
         $user = $this->userDataSource->findById($userId);
-        if (is_null($user)) {
-            return null;
+        if ($user === null) {
+            throw new UserNotFoundException();
         }
 
-        return $this->walletDataSource->saveWalletInCache();
+        $walletId = $this->walletDataSource->saveWalletInCache();
+        if ($walletId === null) {
+            return 'Cache is full';
+        }
+
+        return $walletId;
     }
 }
