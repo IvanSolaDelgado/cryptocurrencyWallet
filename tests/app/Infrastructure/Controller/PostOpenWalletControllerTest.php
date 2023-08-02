@@ -24,7 +24,7 @@ class PostOpenWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function ifUserIdNotFoundThrowsError()
+    public function throwsErrorWhenUserIdNotFound()
     {
         $this->userDataSource
         ->expects("findById")
@@ -40,7 +40,7 @@ class PostOpenWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function ifGoodUserIdCreatesWalletAndReturnsWalletId()
+    public function createsWalletWhenUserIsFound()
     {
         $this->userDataSource
             ->expects("findById")
