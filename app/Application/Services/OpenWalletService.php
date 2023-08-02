@@ -4,7 +4,7 @@ namespace App\Application\Services;
 
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\DataSources\WalletDataSource;
-use App\Infrastructure\Exceptions\UserNotFoundException;
+use App\Domain\Exceptions\UserNotFoundException;
 
 class OpenWalletService
 {

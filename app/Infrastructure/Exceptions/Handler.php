@@ -2,8 +2,7 @@
 
 namespace App\Infrastructure\Exceptions;
 
-use App\Infrastructure\Exceptions\UserNotFoundException;
-use Exception;
+use App\Domain\Exceptions\UserNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
