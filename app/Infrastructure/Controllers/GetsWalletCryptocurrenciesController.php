@@ -17,9 +17,9 @@ class GetsWalletCryptocurrenciesController extends BaseController
     {
         $this->walletDataSource = $walletDataSource;
     }
-    public function __invoke($wallet_id): JsonResponse
+    public function __invoke($wallet_id, WalletIdValidator $walletIdValidator): JsonResponse
     {
-        if (!WalletIdValidator::validateWalletId($wallet_id)) {
+        if (!$walletIdValidator->validateWalletId($wallet_id)) {
             return response()->json(['error' => 'Bad Request',
                 'message' => 'The wallet id must be an integer'], Response::HTTP_BAD_REQUEST);
         }

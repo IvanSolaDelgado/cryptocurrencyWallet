@@ -7,12 +7,21 @@ use Tests\TestCase;
 
 class WalletIdValidatorTest extends TestCase
 {
+    private WalletIdValidator $walletIdValidator;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->walletIdValidator = new WalletIdValidator();
+    }
+
+
     /**
      * @test
      */
     public function validWalletIdIfIdIsInteger()
     {
-        $this->assertTrue(WalletIdValidator::validateWalletId(123));
+        $this->assertTrue($this->walletIdValidator->validateWalletId(123));
     }
 
     /**
@@ -20,7 +29,7 @@ class WalletIdValidatorTest extends TestCase
      */
     public function invalidWalletIdIfIdIsString()
     {
-        $this->assertFalse(WalletIdValidator::validateWalletId("one"));
+        $this->assertFalse($this->walletIdValidator->validateWalletId("one"));
     }
 
     /**
@@ -28,7 +37,7 @@ class WalletIdValidatorTest extends TestCase
      */
     public function invalidWalletIdIfIdIsDecimal()
     {
-        $this->assertFalse(WalletIdValidator::validateWalletId(0.1));
+        $this->assertFalse($this->walletIdValidator->validateWalletId(0.1));
     }
 
     /**
@@ -36,7 +45,7 @@ class WalletIdValidatorTest extends TestCase
      */
     public function invalidWalletIdIfIdIsNegative()
     {
-        $this->assertFalse(WalletIdValidator::validateWalletId(-1));
+        $this->assertFalse($this->walletIdValidator->validateWalletId(-1));
     }
 
     /**
@@ -44,6 +53,6 @@ class WalletIdValidatorTest extends TestCase
      */
     public function invalidWalletIdIfIdIsNull()
     {
-        $this->assertFalse(WalletIdValidator::validateWalletId(null));
+        $this->assertFalse($this->walletIdValidator->validateWalletId(null));
     }
 }
