@@ -21,7 +21,7 @@ class GetsWalletCryptocurrenciesController extends BaseController
     {
         if (!$walletIdValidator->validateWalletId($wallet_id)) {
             return response()->json(['error' => 'Bad Request',
-                'message' => 'The wallet id must be an integer'], Response::HTTP_BAD_REQUEST);
+                'message' => $walletIdValidator->getMessage($wallet_id)], Response::HTTP_BAD_REQUEST);
         }
         if (is_null($this->walletDataSource->findById($wallet_id))) {
             return response()->json([

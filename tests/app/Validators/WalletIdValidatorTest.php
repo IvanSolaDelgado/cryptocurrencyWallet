@@ -29,7 +29,13 @@ class WalletIdValidatorTest extends TestCase
      */
     public function invalidWalletIdIfIdIsString()
     {
-        $this->assertFalse($this->walletIdValidator->validateWalletId("one"));
+        $walletId = "one";
+
+        $this->assertFalse($this->walletIdValidator->validateWalletId($walletId));
+        $this->assertEquals(
+            'The wallet id must be an integer, not a string.',
+            $this->walletIdValidator->getMessage($walletId)
+        );
     }
 
     /**
@@ -37,7 +43,13 @@ class WalletIdValidatorTest extends TestCase
      */
     public function invalidWalletIdIfIdIsDecimal()
     {
-        $this->assertFalse($this->walletIdValidator->validateWalletId(0.1));
+        $walletId = 0.1;
+
+        $this->assertFalse($this->walletIdValidator->validateWalletId($walletId));
+        $this->assertEquals(
+            'The wallet id must be an integer, not a float.',
+            $this->walletIdValidator->getMessage($walletId)
+        );
     }
 
     /**
@@ -45,7 +57,13 @@ class WalletIdValidatorTest extends TestCase
      */
     public function invalidWalletIdIfIdIsNegative()
     {
-        $this->assertFalse($this->walletIdValidator->validateWalletId(-1));
+        $walletId = -1;
+
+        $this->assertFalse($this->walletIdValidator->validateWalletId($walletId));
+        $this->assertEquals(
+            'The wallet id must be a non-negative integer.',
+            $this->walletIdValidator->getMessage($walletId)
+        );
     }
 
     /**
@@ -53,6 +71,12 @@ class WalletIdValidatorTest extends TestCase
      */
     public function invalidWalletIdIfIdIsNull()
     {
-        $this->assertFalse($this->walletIdValidator->validateWalletId(null));
+        $walletId = null;
+
+        $this->assertFalse($this->walletIdValidator->validateWalletId($walletId));
+        $this->assertEquals(
+            'Error occurred during wallet id validation.',
+            $this->walletIdValidator->getMessage($walletId)
+        );
     }
 }
