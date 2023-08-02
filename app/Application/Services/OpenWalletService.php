@@ -24,7 +24,7 @@ class OpenWalletService
     {
         $user = $this->userDataSource->findById($userId);
         if (is_null($user)) {
-            throw new UserNotFoundException('User not found');
+            throw new UserNotFoundException();
         }
 
         return $this->walletDataSource->saveWalletInCache();
