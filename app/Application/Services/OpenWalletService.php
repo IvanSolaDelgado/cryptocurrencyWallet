@@ -23,10 +23,15 @@ class OpenWalletService
     public function createWallet(string $userId): ?string
     {
         $user = $this->userDataSource->findById($userId);
-        if (is_null($user)) {
+        if ($user === null) {
             throw new UserNotFoundException();
         }
 
-        return $this->walletDataSource->saveWalletInCache();
+        $walletId = $this->walletDataSource->saveWalletInCache();
+        if ($walletId === null) {
+            return 'Cache is full';
+        }
+
+        return $walletId;
     }
 }
