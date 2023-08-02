@@ -22,13 +22,6 @@ class GetsWalletCryptocurrenciesController extends BaseController
 
         $walletCryptocurrencies = $walletCryptocurrenciesService->getWalletCryptocurrencies($wallet_id);
 
-        if ($walletCryptocurrencies === null) {
-            return response()->json(
-                ['description' => 'A wallet with the specified ID was not found'],
-                Response::HTTP_NOT_FOUND
-            );
-        }
-
         return response()->json($walletCryptocurrencies, Response::HTTP_OK);
     }
 }

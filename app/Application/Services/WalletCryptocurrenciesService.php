@@ -2,6 +2,7 @@
 
 namespace App\Application\Services;
 
+use App\Application\Exceptions\WalletNotFoundException;
 use App\Domain\DataSources\WalletDataSource;
 use Illuminate\Support\Facades\Cache;
 
@@ -14,15 +15,18 @@ class WalletCryptocurrenciesService
         $this->walletDataSource = $walletDataSource;
     }
 
-    public function getWalletCryptocurrencies($wallet_id)
+    /**
+     * @throws WalletNotFoundException
+     */
+    public function getWalletCryptocurrencies($wallet_id): ?array
     {
-        $wallet = $this->walletDataSource->findById($wallet_id);
-        if ($wallet === null) {
-            return null;
+        $walletId = $this->walletDataSource->findById($wallet_id);
+        if ($walletId === null) {
+            throw new WalletNotFoundException();
         }
 
-        $walletArray = Cache::get('wallet_' . $wallet_id);
+        $wallet = Cache::get('wallet_' . $wallet_id);
 
-        return [$walletArray['coins']];
+        return $wallet['coins'];
     }
 }

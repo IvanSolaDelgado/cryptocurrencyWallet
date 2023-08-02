@@ -23,7 +23,7 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
         $response->assertNotFound();
-        $response->assertExactJson(['description' => 'A wallet with the specified ID was not found']);
+        $response->assertExactJson(['description' => 'Wallet not found']);
     }
 
     /**
@@ -48,6 +48,6 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
         $response->assertOk();
-        $response->assertJson([$walletCoins]);
+        $response->assertJson($walletCoins);
     }
 }
