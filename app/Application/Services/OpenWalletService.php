@@ -20,7 +20,7 @@ class OpenWalletService
     public function createWallet(string $userId): ?string
     {
         $user = $this->userDataSource->findById($userId);
-        if (is_null($user)) {
+        if ($user === null) {
             return null;
         }
 
