@@ -5,7 +5,6 @@ namespace Tests\app\Application\DataSources;
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\Wallet;
-use App\Domain\DataSources\WalletDataSource;
 use App\Infrastructure\Persistence\FileWalletDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
@@ -27,7 +26,7 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function returnsNullWhenWalletIdDoesNotExist()
+    public function doesNotFindAWalletIfWalletDoesNotExist()
     {
         $walletDataSource = new FileWalletDataSource();
 
@@ -39,40 +38,13 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function returnsWalletWhenWalletIdExists()
+    public function findAWalletIfWalletExists()
     {
         $walletDataSource = new FileWalletDataSource();
 
         Cache::shouldReceive('has')->andReturn(true);
 
         $this->assertEquals(new Wallet('wallet_0'), $walletDataSource->findById('wallet_0'));
-    }
-
-    /**
-     * @test
-     */
-    public function savesWalletWhenCacheIsNotFull()
-    {
-        $walletDataSource = new FileWalletDataSource();
-
-        Cache::shouldReceive('has')->andReturn(false);
-        Cache::shouldReceive('put')
-            ->once()
-            ->with('wallet_0', Mockery::type('array'));
-
-        $this->assertEquals('wallet_0', $walletDataSource->saveWalletInCache());
-    }
-
-    /**
-     * @test
-     */
-    public function returnsNullWhenCacheIsFull()
-    {
-        $walletDataSource = new FileWalletDataSource();
-
-        Cache::shouldReceive('has')->andReturn(true);
-
-        $this->assertEquals(null, $walletDataSource->saveWalletInCache());
     }
 
     /**
