@@ -50,6 +50,33 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
+    public function savesWalletWhenCacheIsNotFull()
+    {
+        $walletDataSource = new FileWalletDataSource();
+
+        Cache::shouldReceive('has')->andReturn(false);
+        Cache::shouldReceive('put')
+            ->once()
+            ->with('wallet_0', Mockery::type('array'));
+
+        $this->assertEquals('wallet_0', $walletDataSource->saveWalletInCache());
+    }
+
+    /**
+     * @test
+     */
+    public function returnsNullWhenCacheIsFull()
+    {
+        $walletDataSource = new FileWalletDataSource();
+
+        Cache::shouldReceive('has')->andReturn(true);
+
+        $this->assertEquals(null, $walletDataSource->saveWalletInCache());
+    }
+
+    /**
+     * @test
+     */
     public function whenHappyPathBuyingCoinPurchaseCached()
     {
         $coin = new Coin(
