@@ -26,7 +26,7 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function whenCacheIsNotFullSavesWalletInCache()
+    public function savesWalletWhenCacheIsNotFull()
     {
         $walletDataSource = new FileWalletDataSource();
 
@@ -41,7 +41,7 @@ class WalletDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function whenCacheIsFullReturnsNull()
+    public function returnsNullWhenCacheIsFull()
     {
         $walletDataSource = new FileWalletDataSource();
 
