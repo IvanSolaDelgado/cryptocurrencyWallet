@@ -4,7 +4,7 @@ namespace Tests\app\Infrastructure\DataSources;
 
 use App\Domain\Coin;
 use App\Infrastructure\ApiServices\CoinloreApiService;
-use App\Infrastructure\Persistence\FileCoinDataSource;
+use App\Infrastructure\Persistence\ApiCoinDataSource;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +23,7 @@ class CoinDataSourceTest extends TestCase
      */
     public function doesNotFindCoinWhenCoinIdDoesNotExist()
     {
-        $coinDataSource = new FileCoinDataSource($this->coinloreApiService);
+        $coinDataSource = new ApiCoinDataSource($this->coinloreApiService);
         $coinId = 'invalid_coin_id';
         $amountUsd = '500';
 
@@ -43,7 +43,7 @@ class CoinDataSourceTest extends TestCase
      */
     public function findCoinWhenCoinIdExists()
     {
-        $coinDataSource = new FileCoinDataSource($this->coinloreApiService);
+        $coinDataSource = new ApiCoinDataSource($this->coinloreApiService);
         $coinId = '90';
         $amountUsd = '500';
         $response =  '[{"id": "90", "name": "Bitcoin", "symbol": "BTC", "price_usd": "123.45"}]';
@@ -68,7 +68,7 @@ class CoinDataSourceTest extends TestCase
      */
     public function doesNotGetUsdValueWhenCoinIdDoesNotExist()
     {
-        $coinDataSource = new FileCoinDataSource($this->coinloreApiService);
+        $coinDataSource = new ApiCoinDataSource($this->coinloreApiService);
         $coinId = 'invalid_coin_id';
 
         $this->coinloreApiService
@@ -86,7 +86,7 @@ class CoinDataSourceTest extends TestCase
      */
     public function getUsdValueWhenCoinIdExists()
     {
-        $coinDataSource = new FileCoinDataSource($this->coinloreApiService);
+        $coinDataSource = new ApiCoinDataSource($this->coinloreApiService);
         $coinId = '90';
         $response =  '[{"id": "90", "name": "Bitcoin", "symbol": "BTC", "price_usd": "123.45"}]';
 

@@ -6,7 +6,7 @@ use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
 use App\Infrastructure\ApiServices\CoinloreApiService;
 
-class FileCoinDataSource implements CoinDataSource
+class ApiCoinDataSource implements CoinDataSource
 {
     private CoinloreApiService $coinloreApiService;
 

@@ -5,7 +5,7 @@ namespace Tests\app\Infrastructure\DataSources;
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\Wallet;
-use App\Infrastructure\Persistence\FileWalletDataSource;
+use App\Infrastructure\Persistence\CacheWalletDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Tests\TestCase;
@@ -28,7 +28,7 @@ class WalletDataSourceTest extends TestCase
      */
     public function doesNotFindAWalletIfWalletDoesNotExist()
     {
-        $walletDataSource = new FileWalletDataSource();
+        $walletDataSource = new CacheWalletDataSource();
 
         Cache::shouldReceive('has')->andReturn(false);
 
@@ -40,7 +40,7 @@ class WalletDataSourceTest extends TestCase
      */
     public function findAWalletIfWalletExists()
     {
-        $walletDataSource = new FileWalletDataSource();
+        $walletDataSource = new CacheWalletDataSource();
 
         Cache::shouldReceive('has')->andReturn(true);
 
@@ -52,7 +52,7 @@ class WalletDataSourceTest extends TestCase
      */
     public function savesWalletWhenCacheIsNotFull()
     {
-        $walletDataSource = new FileWalletDataSource();
+        $walletDataSource = new CacheWalletDataSource();
 
         Cache::shouldReceive('has')->andReturn(false);
         Cache::shouldReceive('put')
@@ -67,7 +67,7 @@ class WalletDataSourceTest extends TestCase
      */
     public function returnsNullWhenCacheIsFull()
     {
-        $walletDataSource = new FileWalletDataSource();
+        $walletDataSource = new CacheWalletDataSource();
 
         Cache::shouldReceive('has')->andReturn(true);
 
@@ -92,7 +92,7 @@ class WalletDataSourceTest extends TestCase
             ->andReturn($coin);
 
         if (!Cache::has('wallet_0')) {
-            $walletDataSource = new FileWalletDataSource();
+            $walletDataSource = new CacheWalletDataSource();
             $walletDataSource->saveWalletInCache();
         }
 

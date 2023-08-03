@@ -7,7 +7,7 @@ use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use Illuminate\Support\Facades\Cache;
 
-class FileWalletDataSource implements WalletDataSource
+class CacheWalletDataSource implements WalletDataSource
 {
     public function findById(string $wallet_id): ?Wallet
     {
