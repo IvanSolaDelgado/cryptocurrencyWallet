@@ -24,8 +24,8 @@ class GetsWalletBalanceControllerTest extends TestCase
 
         $response = $this->get('api/wallet/' . $walletOne->getWalletId() . '/balance');
 
-        $response->assertNotFound();
-        $response->assertExactJson(['description' => 'A wallet with the specified ID was not found']);
+        $response->assertBadRequest();
+        $response->assertExactJson(['description' => 'Wallet not found']);
     }
 
     /**
