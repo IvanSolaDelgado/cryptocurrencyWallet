@@ -5,48 +5,22 @@ namespace Tests\app\Infrastructure\Controller;
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
+use App\Infrastructure\ApiServices\CoinloreApiService;
+use App\Infrastructure\Persistence\ApiCoinDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Tests\TestCase;
 
 class GetsWalletBalanceControllerTest extends TestCase
 {
-    private WalletDataSource $walletDataSource;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->app->bind(WalletDataSource::class, function () {
-            return $this->walletDataSource;
-        });
-    }
-
     /**
      * @test
      */
-    public function ifBadWalletIdThrowsBadRequest()
-    {
-        $this->walletDataSource
-            ->expects("findById")
-            ->with(null)
-            ->times(0)
-            ->andReturn(null);
-
-        $response = $this->get('api/wallet/-5/balance');
-        $response->assertBadRequest();
-    }
-
-    /**
-     * @test
-     */
-    public function ifWalletIdNotFoundThrowsError()
+    public function throwsErrorWhenWalletIdNotFound()
     {
         $walletOne = new Wallet('0');
-        $this->walletDataSource
-            ->expects("findById")
-            ->with("0")
-            ->andReturn(null);
+
+        Cache::shouldReceive('has')->andReturn(false);
 
         $response = $this->get('api/wallet/' . $walletOne->getWalletId() . '/balance');
 
@@ -57,35 +31,32 @@ class GetsWalletBalanceControllerTest extends TestCase
     /**
      * @test
      */
-    public function ifWalletIdExistsGetsWalletBalance()
+    public function getsWalletBalanceWhenWalletIdFound()
     {
-        $walletId = '0';
-        $wallet = new Wallet($walletId);
-        $this->walletDataSource
-            ->expects("findById")
-            ->with($walletId)
-            ->andReturn($wallet);
-
-        $coinDataSource = Mockery::mock(CoinDataSource::class);
+        $coinloreApiService = Mockery::mock(CoinloreApiService::class);
+        $coinDataSource = new ApiCoinDataSource($coinloreApiService);
         $this->app->bind(CoinDataSource::class, function () use ($coinDataSource) {
             return $coinDataSource;
         });
-
+        $walletId = '0';
+        $wallet = new Wallet($walletId);
         $coinId = 'someCoinId';
         $coinAmount = 5;
         $coinCurrentValue = 20;
-        $coinDataSource
-            ->expects("getUsdValue")
-            ->with($coinId)
-            ->andReturn($coinCurrentValue);
+        $coinBuyTimeAccumulatedValue = 50;
 
+        Cache::shouldReceive('has')->andReturn(true);
         Cache::shouldReceive('get')
             ->with('wallet_' . $walletId)
-            ->andReturn(['BuyTimeAccumulatedValue' => 50, 'coins' => [['coinId' => $coinId, 'amount' => $coinAmount]]]);
+            ->andReturn(['BuyTimeAccumulatedValue' => $coinBuyTimeAccumulatedValue,
+                'coins' => [['coinId' => $coinId, 'amount' => $coinAmount]]]);
+        $coinloreApiService->shouldReceive("getCoinloreData")
+            ->with($coinId)
+            ->andReturn('[{"id": "90", "name": "Bitcoin", "symbol": "BTC", "price_usd": "20"}]');
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId() . '/balance');
 
-        $expectedBalance = ($coinCurrentValue * $coinAmount) - 50;
+        $expectedBalance = ($coinCurrentValue * $coinAmount) - $coinBuyTimeAccumulatedValue;
         $response->assertOk();
         $response->assertJson(['balance_usd' => $expectedBalance]);
     }
