@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\app\Application\DataSources;
+namespace Tests\app\Infrastructure\DataSources;
 
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
