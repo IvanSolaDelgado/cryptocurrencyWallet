@@ -4,28 +4,20 @@ namespace App\Infrastructure\Persistence;
 
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
+use App\Infrastructure\ApiServices\CoinloreApiService;
 
 class FileCoinDataSource implements CoinDataSource
 {
+    private CoinloreApiService $coinloreApiService;
+
+    public function __construct(CoinloreApiService $coinloreApiService)
+    {
+        $this->coinloreApiService = $coinloreApiService;
+    }
+
     public function findById(string $coinId, string $amountUsd): ?Coin
     {
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.coinlore.net/api/ticker/?id=' . $coinId,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        curl_close($curl);
+        $response = $this->coinloreApiService->getCoinloreData($coinId);
 
         if ($response) {
             $coin_data = json_decode($response, true)[0];
@@ -42,23 +34,7 @@ class FileCoinDataSource implements CoinDataSource
 
     public function getUsdValue(string $coinId): ?float
     {
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.coinlore.net/api/ticker/?id=' . $coinId,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
-        ));
-
-        $response = curl_exec($curl);
-        curl_close($curl);
+        $response = $this->coinloreApiService->getCoinloreData($coinId);
 
         if ($response) {
             $coin_data = json_decode($response, true)[0];
