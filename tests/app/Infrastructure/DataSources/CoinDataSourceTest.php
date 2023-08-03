@@ -32,9 +32,9 @@ class CoinDataSourceTest extends TestCase
             ->with($coinId)
             ->andReturn(null);
 
-        $usdValue = $coinDataSource->findById($coinId, $amountUsd);
+        $coin = $coinDataSource->findById($coinId, $amountUsd);
 
-        $this->assertNull($usdValue);
+        $this->assertNull($coin);
     }
 
 
