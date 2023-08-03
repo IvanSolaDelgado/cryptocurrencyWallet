@@ -9,6 +9,6 @@ class WalletNotFoundException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Wallet not found', Response::HTTP_OK);
+        parent::__construct('Wallet not found', Response::HTTP_BAD_REQUEST);
     }
 }

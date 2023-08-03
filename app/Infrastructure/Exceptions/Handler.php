@@ -53,13 +53,13 @@ class Handler extends ExceptionHandler
         if ($exception instanceof UserNotFoundException) {
             return response()->json([
                 'description' => $exception->getMessage()
-            ], Response::HTTP_NOT_FOUND);
+            ], $exception->getCode());
         }
 
         if ($exception instanceof WalletNotFoundException) {
             return response()->json([
                 'description' => $exception->getMessage()
-            ], Response::HTTP_NOT_FOUND);
+            ], $exception->getCode());
         }
 
         return parent::render($request, $exception);
