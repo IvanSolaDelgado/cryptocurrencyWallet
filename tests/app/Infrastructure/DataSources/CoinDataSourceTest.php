@@ -2,6 +2,7 @@
 
 namespace Tests\app\Infrastructure\DataSources;
 
+use App\Domain\Coin;
 use App\Infrastructure\ApiServices\CoinloreApiService;
 use App\Infrastructure\Persistence\FileCoinDataSource;
 use Mockery;
@@ -20,10 +21,55 @@ class CoinDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function getUsdValueReturnsNullWhenCoinIdDoesNotExist()
+    public function doesNotFindCoinWhenCoinIdDoesNotExist()
     {
-        $coinId = 'invalid_coin_id';
         $coinDataSource = new FileCoinDataSource($this->coinloreApiService);
+        $coinId = 'invalid_coin_id';
+        $amountUsd = '500';
+
+        $this->coinloreApiService
+            ->shouldReceive('getCoinloreData')
+            ->with($coinId)
+            ->andReturn(null);
+
+        $usdValue = $coinDataSource->findById($coinId, $amountUsd);
+
+        $this->assertNull($usdValue);
+    }
+
+
+    /**
+     * @test
+     */
+    public function findCoinWhenCoinIdExists()
+    {
+        $coinDataSource = new FileCoinDataSource($this->coinloreApiService);
+        $coinId = '90';
+        $amountUsd = '500';
+        $response =  '[{"id": "90", "name": "Bitcoin", "symbol": "BTC", "price_usd": "123.45"}]';
+
+        $this->coinloreApiService
+            ->shouldReceive('getCoinloreData')
+            ->with($coinId)
+            ->andReturn($response);
+
+        $coin = $coinDataSource->findById($coinId, $amountUsd)->getJsonData();
+
+        $this->assertEquals('90', $coin["coinId"]);
+        $this->assertEquals('Bitcoin', $coin['name']);
+        $this->assertEquals('BTC', $coin['symbol']);
+        $this->assertEquals(floatval($amountUsd) / floatval($coin["valueUsd"]), $coin['amount']);
+        $this->assertEquals('123.45', $coin['valueUsd']);
+    }
+
+
+    /**
+     * @test
+     */
+    public function doesNotGetUsdValueWhenCoinIdDoesNotExist()
+    {
+        $coinDataSource = new FileCoinDataSource($this->coinloreApiService);
+        $coinId = 'invalid_coin_id';
 
         $this->coinloreApiService
             ->shouldReceive('getCoinloreData')
@@ -40,14 +86,14 @@ class CoinDataSourceTest extends TestCase
      */
     public function getUsdValueWhenCoinIdExists()
     {
-        $coinId = '90';
         $coinDataSource = new FileCoinDataSource($this->coinloreApiService);
-        $responseJson = '[{"id": "90", "price_usd": "123.45"}, {"id": "91", "price_usd": "678.90"}]';
+        $coinId = '90';
+        $response =  '[{"id": "90", "name": "Bitcoin", "symbol": "BTC", "price_usd": "123.45"}]';
 
         $this->coinloreApiService
             ->shouldReceive('getCoinloreData')
             ->with($coinId)
-            ->andReturn($responseJson);
+            ->andReturn($response);
 
         $usdValue = $coinDataSource->getUsdValue($coinId);
 
