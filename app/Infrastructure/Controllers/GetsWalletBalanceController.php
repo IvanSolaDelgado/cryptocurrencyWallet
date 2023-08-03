@@ -15,16 +15,21 @@ class GetsWalletBalanceController extends BaseController
      * @throws WalletNotFoundException
      */
     public function __invoke(
-        $wallet_id,
+        $walletId,
         WalletIdValidator $walletIdValidator,
         WalletBalanceService $walletBalanceService
     ): JsonResponse {
-        if (!$walletIdValidator->validateWalletId($wallet_id)) {
-            return response()->json(['error' => 'Bad Request',
-                'message' => $walletIdValidator->getMessage($wallet_id)], Response::HTTP_BAD_REQUEST);
+        if (!$walletIdValidator->validateWalletId($walletId)) {
+            return response()->json(
+                [
+                    'error' => 'Bad Request',
+                    'message' => $walletIdValidator->getMessage($walletId)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
-        $balance = $walletBalanceService->getsBalance($wallet_id);
+        $balance = $walletBalanceService->getsBalance($walletId);
 
         return response()->json(['balance_usd' => $balance], Response::HTTP_OK);
     }

@@ -22,11 +22,11 @@ class WalletBalanceService
      */
     public function getsBalance($walletId)
     {
-        if ($this->walletDataSource->findById($walletId) === null) {
+        if (is_null($this->walletDataSource->findById($walletId))) {
             throw new WalletNotFoundException();
         }
 
-        $walletArray = Cache::get('wallet_' . $walletId);
+        $walletArray = $this->walletDataSource->getWalletById($walletId);
         $accumulatedSum = $walletArray['BuyTimeAccumulatedValue'];
         $totalValue = 0;
 
