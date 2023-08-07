@@ -50,13 +50,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception): Response
     {
-        if ($exception instanceof UserNotFoundException) {
-            return response()->json([
-                'description' => $exception->getMessage()
-            ], $exception->getCode());
-        }
-
-        if ($exception instanceof WalletNotFoundException) {
+        if ($exception instanceof UserNotFoundException || $exception instanceof WalletNotFoundException) {
             return response()->json([
                 'description' => $exception->getMessage()
             ], $exception->getCode());
