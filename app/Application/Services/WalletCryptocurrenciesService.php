@@ -18,15 +18,15 @@ class WalletCryptocurrenciesService
     /**
      * @throws WalletNotFoundException
      */
-    public function getWalletCryptocurrencies($wallet_id): array
+    public function getWalletCryptocurrencies($walletId): array
     {
-        $walletId = $this->walletDataSource->findById($wallet_id);
-        if ($walletId === null) {
+        $wallet = $this->walletDataSource->findById($walletId);
+        if (is_null($wallet)) {
             throw new WalletNotFoundException();
         }
 
-        $wallet = Cache::get('wallet_' . $wallet_id);
+        $walletData = $this->walletDataSource->getWalletById($walletId);
 
-        return $wallet['coins'];
+        return $walletData['coins'];
     }
 }

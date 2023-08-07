@@ -59,9 +59,13 @@ class WalletCryptocurrenciesServiceTest extends TestCase
             ->shouldReceive("findById")
             ->with("0")
             ->andReturn(new Wallet($walletId));
+        $this->walletDataSource
+            ->shouldReceive('getWalletById')
+            ->with($walletId)
+            ->andReturn(['coins' => $coins]);
         Cache::shouldReceive("get")
             ->with("wallet_0")
-            ->andReturn(['coins' => $coins]);
+            ->andReturn(new Wallet('0'));
 
         $this->assertEquals($coins, $this->walletCryptocurrenciesService->getWalletCryptocurrencies($walletId));
     }
