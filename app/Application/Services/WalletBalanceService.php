@@ -5,12 +5,12 @@ namespace App\Application\Services;
 use App\Application\Exceptions\WalletNotFoundException;
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\DataSources\WalletDataSource;
-use Illuminate\Support\Facades\Cache;
 
 class WalletBalanceService
 {
     private WalletDataSource $walletDataSource;
     private CoinDataSource $coinDataSource;
+
     public function __construct(WalletDataSource $walletDataSource, CoinDataSource $coinDataSource)
     {
         $this->walletDataSource = $walletDataSource;
@@ -26,11 +26,11 @@ class WalletBalanceService
             throw new WalletNotFoundException();
         }
 
-        $walletArray = $this->walletDataSource->getWalletById($walletId);
-        $accumulatedSum = $walletArray['BuyTimeAccumulatedValue'];
+        $wallet = $this->walletDataSource->getWalletById($walletId);
+        $accumulatedSum = $wallet['BuyTimeAccumulatedValue'];
         $totalValue = 0;
 
-        foreach ($walletArray['coins'] as $coin) {
+        foreach ($wallet['coins'] as $coin) {
             $coinCurrentValue = $this->coinDataSource->getUsdValue($coin['coinId']);
             $totalValue += $coinCurrentValue * $coin['amount'];
         }

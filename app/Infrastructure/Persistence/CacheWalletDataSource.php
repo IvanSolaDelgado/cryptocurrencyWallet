@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Cache;
 
 class CacheWalletDataSource implements WalletDataSource
 {
-    public function findById(string $wallet_id): ?Wallet
+    public function findById(string $walletId): ?Wallet
     {
-        if (Cache::has('wallet_' . $wallet_id)) {
-            return new Wallet($wallet_id);
+        if (Cache::has('wallet_' . $walletId)) {
+            return new Wallet($walletId);
         }
         return null;
     }
@@ -66,10 +66,11 @@ class CacheWalletDataSource implements WalletDataSource
                 return 'wallet_' . $i;
             }
         }
+
         return null;
     }
 
-    public function getWalletById($walletId)
+    public function getWalletById($walletId): array
     {
         return Cache::get('wallet_' . $walletId);
     }

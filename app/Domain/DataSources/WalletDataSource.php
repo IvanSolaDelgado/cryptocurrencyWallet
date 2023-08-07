@@ -15,5 +15,5 @@ interface WalletDataSource
 
     public function saveWalletInCache(): ?string;
 
-    public function getWalletById($walletId);
+    public function getWalletById($walletId): array;
 }
