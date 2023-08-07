@@ -66,6 +66,7 @@ class FileWalletDataSource implements WalletDataSource
                 return 'wallet_' . $i;
             }
         }
+
         return null;
     }
 
