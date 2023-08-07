@@ -31,6 +31,11 @@ class GetsWalletBalanceController extends BaseController
 
         $balance = $walletBalanceService->getsBalance($walletId);
 
-        return response()->json(['balance_usd' => $balance], Response::HTTP_OK);
+        return response()->json(
+            [
+                'balance_usd' => $balance
+            ],
+            Response::HTTP_OK
+        );
     }
 }

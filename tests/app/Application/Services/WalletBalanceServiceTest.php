@@ -8,7 +8,6 @@ use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
-use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Tests\TestCase;
@@ -18,6 +17,7 @@ class WalletBalanceServiceTest extends TestCase
     private WalletDataSource $walletDataSource;
     private CoinDataSource $coinDataSource;
     private WalletBalanceService $walletBalanceService;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -68,12 +68,16 @@ class WalletBalanceServiceTest extends TestCase
             ->shouldReceive("getWalletById")
             ->with($walletId)
             ->once()
-            ->andReturn(['BuyTimeAccumulatedValue' => $walletBuyTimeAccumulatedValue,'coins' => $walletCoins]);
+            ->andReturn(
+                [
+                    'BuyTimeAccumulatedValue' => $walletBuyTimeAccumulatedValue,
+                    'coins' => $walletCoins
+                ]
+            );
         $this->coinDataSource
             ->shouldReceive("getUsdValue")
             ->with($coinId)
             ->andReturn($coinValue);
-
 
         $balance = $this->walletBalanceService->getsBalance($walletId);
 
