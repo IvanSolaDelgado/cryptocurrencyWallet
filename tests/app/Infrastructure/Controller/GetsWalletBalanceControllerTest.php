@@ -66,7 +66,7 @@ class GetsWalletBalanceControllerTest extends TestCase
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId() . '/balance');
         $expectedBalance = ($coinCurrentValue * $coinAmount) - $coinBuyTimeAccumulatedValue;
-        
+
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(['balance_usd' => $expectedBalance]);
     }
