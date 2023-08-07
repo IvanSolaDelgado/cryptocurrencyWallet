@@ -7,7 +7,6 @@ use App\Application\Services\WalletCryptocurrenciesService;
 use App\Domain\Coin;
 use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
-use Exception;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Tests\TestCase;
@@ -16,6 +15,7 @@ class WalletCryptocurrenciesServiceTest extends TestCase
 {
     private WalletCryptocurrenciesService $walletCryptocurrenciesService;
     private WalletDataSource $walletDataSource;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -27,8 +27,7 @@ class WalletCryptocurrenciesServiceTest extends TestCase
     /**
      * @test
      */
-
-    public function throwsErrorWhenWalletNotFound()
+    public function walletNotFoundIfWalletDoesNotExist()
     {
         $this->walletDataSource
             ->shouldReceive("findById")
@@ -45,7 +44,6 @@ class WalletCryptocurrenciesServiceTest extends TestCase
     /**
      * @test
      */
-
     public function getsWalletCryptocurrenciesWhenWalletFound()
     {
         $walletId = "0";
