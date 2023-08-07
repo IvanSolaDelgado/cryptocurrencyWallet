@@ -3,10 +3,9 @@
 namespace Tests\app\Infrastructure\Controller;
 
 use App\Domain\Coin;
-use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use Illuminate\Support\Facades\Cache;
-use Mockery;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class GetsWalletCryptocurrenciesControllerTest extends TestCase
@@ -22,7 +21,7 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
-        $response->assertNotFound();
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'A wallet with the specified ID was not found']);
     }
 
@@ -47,7 +46,7 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
-        $response->assertOk();
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJson([$walletCoins]);
     }
 }
