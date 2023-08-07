@@ -9,31 +9,40 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Validator;
 
 class GetsWalletBalanceController extends BaseController
 {
     private WalletDataSource $walletDataSource;
     private CoinDataSource $coinDataSource;
+
     public function __construct(WalletDataSource $walletDataSource, CoinDataSource $coinDataSource)
     {
         $this->walletDataSource = $walletDataSource;
         $this->coinDataSource = $coinDataSource;
     }
-    public function __invoke($wallet_id, WalletIdValidator $walletIdValidator): JsonResponse
+
+    public function __invoke($walletId, WalletIdValidator $walletIdValidator): JsonResponse
     {
-        if (!$walletIdValidator->validateWalletId($wallet_id)) {
-            return response()->json(['error' => 'Bad Request',
-                'message' => $walletIdValidator->getMessage($wallet_id)], Response::HTTP_BAD_REQUEST);
+        if (!$walletIdValidator->validateWalletId($walletId)) {
+            return response()->json(
+                [
+                    'error' => 'Bad Request',
+                    'message' => $walletIdValidator->getMessage($walletId)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
-        if (is_null($this->walletDataSource->findById($wallet_id))) {
-            return response()->json([
-                'description' => 'A wallet with the specified ID was not found'
-            ], Response::HTTP_NOT_FOUND);
+        if (is_null($this->walletDataSource->findById($walletId))) {
+            return response()->json(
+                [
+                    'description' => 'A wallet with the specified ID was not found'
+                ],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
-        $walletArray = Cache::get('wallet_' . $wallet_id);
+        $walletArray = Cache::get('wallet_' . $walletId);
         $accumulatedSum = $walletArray['BuyTimeAccumulatedValue'];
         $totalValue = 0;
 
@@ -43,6 +52,11 @@ class GetsWalletBalanceController extends BaseController
         }
 
         $balance = $totalValue - $accumulatedSum;
-        return response()->json(['balance_usd' => $balance], Response::HTTP_OK);
+        return response()->json(
+            [
+                'balance_usd' => $balance
+            ],
+            Response::HTTP_OK
+        );
     }
 }
