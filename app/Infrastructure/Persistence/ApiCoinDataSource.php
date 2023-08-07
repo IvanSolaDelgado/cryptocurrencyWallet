@@ -29,6 +29,7 @@ class ApiCoinDataSource implements CoinDataSource
                 $coin_data["price_usd"]
             );
         }
+
         return null;
     }
 
@@ -40,6 +41,7 @@ class ApiCoinDataSource implements CoinDataSource
             $coin_data = json_decode($response, true)[0];
             return floatval($coin_data["price_usd"]);
         }
+
         return null;
     }
 }

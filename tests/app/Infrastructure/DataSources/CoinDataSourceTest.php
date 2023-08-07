@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 class CoinDataSourceTest extends TestCase
 {
     private CoinloreApiService $coinloreApiService;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,7 +38,6 @@ class CoinDataSourceTest extends TestCase
         $this->assertNull($coin);
     }
 
-
     /**
      * @test
      */
@@ -61,7 +61,6 @@ class CoinDataSourceTest extends TestCase
         $this->assertEquals(floatval($amountUsd) / floatval($coin["valueUsd"]), $coin['amount']);
         $this->assertEquals('123.45', $coin['valueUsd']);
     }
-
 
     /**
      * @test

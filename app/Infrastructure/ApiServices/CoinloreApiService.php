@@ -18,6 +18,7 @@ class CoinloreApiService
         if ($response) {
             return $response;
         }
+
         return null;
     }
 }
