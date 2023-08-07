@@ -3,20 +3,35 @@
 namespace Tests\app\Infrastructure\Controller;
 
 use App\Domain\DataSources\CoinDataSource;
-use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use App\Infrastructure\ApiServices\CoinloreApiService;
 use App\Infrastructure\Persistence\ApiCoinDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class GetsWalletBalanceControllerTest extends TestCase
 {
+    private CoinloreApiService $coinloreApiService;
+    private ApiCoinDataSource $apiCoinDataSource;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->coinloreApiService = Mockery::mock(CoinloreApiService::class);
+        $this->apiCoinDataSource = new ApiCoinDataSource($this->coinloreApiService);
+        $this->app->bind(CoinDataSource::class, function () {
+            return $this->apiCoinDataSource;
+        });
+    }
+
+
     /**
      * @test
      */
-    public function throwsErrorWhenWalletIdNotFound()
+    public function walletIdWasNotFoundIfWalletDoesNotExist()
     {
         $walletOne = new Wallet('0');
 
@@ -24,7 +39,7 @@ class GetsWalletBalanceControllerTest extends TestCase
 
         $response = $this->get('api/wallet/' . $walletOne->getWalletId() . '/balance');
 
-        $response->assertNotFound();
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'A wallet with the specified ID was not found']);
     }
 
@@ -33,11 +48,6 @@ class GetsWalletBalanceControllerTest extends TestCase
      */
     public function getsWalletBalanceWhenWalletIdFound()
     {
-        $coinloreApiService = Mockery::mock(CoinloreApiService::class);
-        $coinDataSource = new ApiCoinDataSource($coinloreApiService);
-        $this->app->bind(CoinDataSource::class, function () use ($coinDataSource) {
-            return $coinDataSource;
-        });
         $walletId = '0';
         $wallet = new Wallet($walletId);
         $coinId = 'someCoinId';
@@ -50,14 +60,14 @@ class GetsWalletBalanceControllerTest extends TestCase
             ->with('wallet_' . $walletId)
             ->andReturn(['BuyTimeAccumulatedValue' => $coinBuyTimeAccumulatedValue,
                 'coins' => [['coinId' => $coinId, 'amount' => $coinAmount]]]);
-        $coinloreApiService->shouldReceive("getCoinloreData")
+        $this->coinloreApiService->shouldReceive("getCoinloreData")
             ->with($coinId)
             ->andReturn('[{"id": "90", "name": "Bitcoin", "symbol": "BTC", "price_usd": "20"}]');
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId() . '/balance');
-
         $expectedBalance = ($coinCurrentValue * $coinAmount) - $coinBuyTimeAccumulatedValue;
-        $response->assertOk();
+        
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(['balance_usd' => $expectedBalance]);
     }
 }
