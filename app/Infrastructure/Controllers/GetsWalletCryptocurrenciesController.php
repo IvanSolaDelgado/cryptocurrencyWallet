@@ -11,16 +11,21 @@ use Illuminate\Routing\Controller as BaseController;
 class GetsWalletCryptocurrenciesController extends BaseController
 {
     public function __invoke(
-        $wallet_id,
+        $walletId,
         WalletIdValidator $walletIdValidator,
         WalletCryptocurrenciesService $walletCryptocurrenciesService
     ): JsonResponse {
-        if (!$walletIdValidator->validateWalletId($wallet_id)) {
-            return response()->json(['error' => 'Bad Request',
-                'message' => $walletIdValidator->getMessage($wallet_id)], Response::HTTP_BAD_REQUEST);
+        if (!$walletIdValidator->validateWalletId($walletId)) {
+            return response()->json(
+                [
+                    'error' => 'Bad Request',
+                    'message' => $walletIdValidator->getMessage($walletId)
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
-        $walletCryptocurrencies = $walletCryptocurrenciesService->getWalletCryptocurrencies($wallet_id);
+        $walletCryptocurrencies = $walletCryptocurrenciesService->getWalletCryptocurrencies($walletId);
 
         return response()->json($walletCryptocurrencies, Response::HTTP_OK);
     }
