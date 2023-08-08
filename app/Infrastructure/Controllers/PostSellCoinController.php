@@ -26,7 +26,6 @@ class PostSellCoinController extends BaseController
         $walletId = $coinRequest->input('wallet_id');
         $amountUsd = $coinRequest->input('amount_usd');
 
-
         $coin = $this->coinDataSource->findById($coinId, $amountUsd);
         if (is_null($coin)) {
             return response()->json([
