@@ -4,7 +4,7 @@ namespace App\Infrastructure\Controllers;
 
 use App\Application\Exceptions\WalletNotFoundException;
 use App\Application\Services\WalletBalanceService;
-use App\Validators\WalletIdValidator;
+use App\Infrastructure\Validators\WalletIdValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;

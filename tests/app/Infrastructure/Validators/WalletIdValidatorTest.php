@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\app\Validators;
+namespace Tests\app\Infrastructure\Validators;
 
-use App\Validators\WalletIdValidator;
+use App\Infrastructure\Validators\WalletIdValidator;
 use Tests\TestCase;
 
 class WalletIdValidatorTest extends TestCase

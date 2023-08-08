@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validators;
+namespace App\Infrastructure\Validators;
 
 use Illuminate\Support\Facades\Validator;
 
