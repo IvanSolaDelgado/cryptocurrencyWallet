@@ -7,6 +7,7 @@ use App\Domain\DataSources\CoinDataSource;
 use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use Mockery;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class PostBuyCoinControllerTest extends TestCase
@@ -41,7 +42,7 @@ class PostBuyCoinControllerTest extends TestCase
                                                       "wallet_id" => "wallet_id_value",
                                                       "amount_usd" => 1]);
 
-        $response->assertNotFound();
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'A coin with the specified ID was not found.']);
     }
 
@@ -60,7 +61,7 @@ class PostBuyCoinControllerTest extends TestCase
                                                     "wallet_id" => null,
                                                     "amount_usd" => null]);
 
-        $response->assertBadRequest();
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertExactJson(['description' => 'bad request error']);
     }
 
@@ -90,7 +91,7 @@ class PostBuyCoinControllerTest extends TestCase
                                                     "wallet_id" => "wallet_id_value",
                                                     "amount_usd" => 1]);
 
-        $response->assertOk();
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertExactJson(['description' => 'successful operation']);
     }
 }

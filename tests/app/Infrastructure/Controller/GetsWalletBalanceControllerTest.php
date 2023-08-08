@@ -9,6 +9,7 @@ use App\Infrastructure\ApiServices\CoinloreApiService;
 use App\Infrastructure\Persistence\ApiCoinDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class GetsWalletBalanceControllerTest extends TestCase
@@ -24,8 +25,8 @@ class GetsWalletBalanceControllerTest extends TestCase
 
         $response = $this->get('api/wallet/' . $walletOne->getWalletId() . '/balance');
 
-        $response->assertNotFound();
-        $response->assertExactJson(['description' => 'A wallet with the specified ID was not found']);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertExactJson(['description' => 'Wallet not found']);
     }
 
     /**
@@ -57,7 +58,7 @@ class GetsWalletBalanceControllerTest extends TestCase
         $response = $this->get('api/wallet/' . $wallet->getWalletId() . '/balance');
 
         $expectedBalance = ($coinCurrentValue * $coinAmount) - $coinBuyTimeAccumulatedValue;
-        $response->assertOk();
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(['balance_usd' => $expectedBalance]);
     }
 }
