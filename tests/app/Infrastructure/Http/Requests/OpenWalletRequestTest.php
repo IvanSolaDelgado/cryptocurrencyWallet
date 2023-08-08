@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\app\Http\Requests;
+namespace Tests\app\Infrastructure\Http\Requests;
 
-use App\Http\Requests\OpenWalletRequest;
+use App\Infrastructure\Http\Requests\OpenWalletRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 use Tests\TestCase;

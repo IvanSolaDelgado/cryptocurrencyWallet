@@ -13,7 +13,6 @@ class PostOpenWalletControllerTest extends TestCase
 {
     private UserDataSource $userDataSource;
 
-
     protected function setUp(): void
     {
         parent::setUp();

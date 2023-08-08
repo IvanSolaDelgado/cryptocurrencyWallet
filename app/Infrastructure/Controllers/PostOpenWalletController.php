@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Controllers;
 
 use App\Application\Services\OpenWalletService;
-use App\Http\Requests\OpenWalletRequest;
+use App\Infrastructure\Http\Requests\OpenWalletRequest;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
