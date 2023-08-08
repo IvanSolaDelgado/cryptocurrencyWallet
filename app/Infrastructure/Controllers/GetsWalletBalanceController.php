@@ -29,7 +29,7 @@ class GetsWalletBalanceController extends BaseController
             );
         }
 
-        $balance = $walletBalanceService->getsBalance($walletId);
+        $balance = $walletBalanceService->execute($walletId);
 
         return response()->json(
             [

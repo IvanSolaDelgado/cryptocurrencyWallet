@@ -13,7 +13,7 @@ class PostOpenWalletController extends BaseController
     public function __invoke(OpenWalletRequest $openWalletRequest, OpenWalletService $openWalletService): JsonResponse
     {
         $userId = $openWalletRequest->input('user_id');
-        $walletId = $openWalletService->createWallet($userId);
+        $walletId = $openWalletService->execute($userId);
 
         if (str_contains($walletId, 'Cache is full')) {
             return response()->json([

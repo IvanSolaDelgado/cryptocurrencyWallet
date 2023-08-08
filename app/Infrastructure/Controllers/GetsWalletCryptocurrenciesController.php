@@ -25,7 +25,7 @@ class GetsWalletCryptocurrenciesController extends BaseController
             );
         }
 
-        $walletCryptocurrencies = $walletCryptocurrenciesService->getWalletCryptocurrencies($walletId);
+        $walletCryptocurrencies = $walletCryptocurrenciesService->execute($walletId);
 
         return response()->json($walletCryptocurrencies, Response::HTTP_OK);
     }

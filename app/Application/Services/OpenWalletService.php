@@ -20,7 +20,7 @@ class OpenWalletService
     /**
      * @throws UserNotFoundException
      */
-    public function createWallet(string $userId): ?string
+    public function execute(string $userId): ?string
     {
         $user = $this->userDataSource->findById($userId);
         if ($user === null) {

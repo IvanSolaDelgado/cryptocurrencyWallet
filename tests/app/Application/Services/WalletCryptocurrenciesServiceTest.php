@@ -38,7 +38,7 @@ class WalletCryptocurrenciesServiceTest extends TestCase
         $this->expectException(WalletNotFoundException::class);
         $this->expectExceptionMessage('Wallet not found');
 
-        $this->walletCryptocurrenciesService->getWalletCryptocurrencies("notFound");
+        $this->walletCryptocurrenciesService->execute("notFound");
     }
 
     /**
@@ -65,6 +65,6 @@ class WalletCryptocurrenciesServiceTest extends TestCase
             ->with("wallet_0")
             ->andReturn(new Wallet('0'));
 
-        $this->assertEquals($coins, $this->walletCryptocurrenciesService->getWalletCryptocurrencies($walletId));
+        $this->assertEquals($coins, $this->walletCryptocurrenciesService->execute($walletId));
     }
 }

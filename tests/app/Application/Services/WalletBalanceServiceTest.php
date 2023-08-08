@@ -42,7 +42,7 @@ class WalletBalanceServiceTest extends TestCase
         $this->expectExceptionMessage('Wallet not found');
         $this->expectExceptionCode(JsonResponse::HTTP_BAD_REQUEST);
 
-        $this->walletBalanceService->getsBalance("notFound");
+        $this->walletBalanceService->execute("notFound");
     }
 
     /**
@@ -79,7 +79,7 @@ class WalletBalanceServiceTest extends TestCase
             ->with($coinId)
             ->andReturn($coinValue);
 
-        $balance = $this->walletBalanceService->getsBalance($walletId);
+        $balance = $this->walletBalanceService->execute($walletId);
 
         $this->assertEquals($balance, ($coinAmount * $coinValue) - $walletBuyTimeAccumulatedValue);
     }
