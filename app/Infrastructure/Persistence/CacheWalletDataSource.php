@@ -70,7 +70,7 @@ class CacheWalletDataSource implements WalletDataSource
         return null;
     }
 
-    public function getWalletById($walletId): array
+    public function getWalletById(string $walletId): array
     {
         return Cache::get('wallet_' . $walletId);
     }
