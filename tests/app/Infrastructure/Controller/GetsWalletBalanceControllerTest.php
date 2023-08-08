@@ -3,90 +3,71 @@
 namespace Tests\app\Infrastructure\Controller;
 
 use App\Domain\DataSources\CoinDataSource;
-use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
+use App\Infrastructure\ApiServices\CoinloreApiService;
+use App\Infrastructure\Persistence\ApiCoinDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class GetsWalletBalanceControllerTest extends TestCase
 {
-    private WalletDataSource $walletDataSource;
+    private CoinloreApiService $coinloreApiService;
+    private ApiCoinDataSource $apiCoinDataSource;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->walletDataSource = Mockery::mock(WalletDataSource::class);
-        $this->app->bind(WalletDataSource::class, function () {
-            return $this->walletDataSource;
+
+        $this->coinloreApiService = Mockery::mock(CoinloreApiService::class);
+        $this->apiCoinDataSource = new ApiCoinDataSource($this->coinloreApiService);
+        $this->app->bind(CoinDataSource::class, function () {
+            return $this->apiCoinDataSource;
         });
     }
 
-    /**
-     * @test
-     */
-    public function ifBadWalletIdThrowsBadRequest()
-    {
-        $this->walletDataSource
-            ->expects("findById")
-            ->with(null)
-            ->times(0)
-            ->andReturn(null);
-
-        $response = $this->get('api/wallet/-5/balance');
-        $response->assertBadRequest();
-    }
 
     /**
      * @test
      */
-    public function ifWalletIdNotFoundThrowsError()
+    public function walletIdWasNotFoundIfWalletDoesNotExist()
     {
         $walletOne = new Wallet('0');
-        $this->walletDataSource
-            ->expects("findById")
-            ->with("0")
-            ->andReturn(null);
+
+        Cache::shouldReceive('has')->andReturn(false);
 
         $response = $this->get('api/wallet/' . $walletOne->getWalletId() . '/balance');
 
-        $response->assertNotFound();
-        $response->assertExactJson(['description' => 'A wallet with the specified ID was not found']);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertExactJson(['description' => 'Wallet not found']);
     }
 
     /**
      * @test
      */
-    public function ifWalletIdExistsGetsWalletBalance()
+    public function getsWalletBalanceWhenWalletIdFound()
     {
         $walletId = '0';
         $wallet = new Wallet($walletId);
-        $this->walletDataSource
-            ->expects("findById")
-            ->with($walletId)
-            ->andReturn($wallet);
-
-        $coinDataSource = Mockery::mock(CoinDataSource::class);
-        $this->app->bind(CoinDataSource::class, function () use ($coinDataSource) {
-            return $coinDataSource;
-        });
-
         $coinId = 'someCoinId';
         $coinAmount = 5;
         $coinCurrentValue = 20;
-        $coinDataSource
-            ->expects("getUsdValue")
-            ->with($coinId)
-            ->andReturn($coinCurrentValue);
+        $coinBuyTimeAccumulatedValue = 50;
 
+        Cache::shouldReceive('has')->andReturn(true);
         Cache::shouldReceive('get')
             ->with('wallet_' . $walletId)
-            ->andReturn(['BuyTimeAccumulatedValue' => 50, 'coins' => [['coinId' => $coinId, 'amount' => $coinAmount]]]);
+            ->andReturn(['BuyTimeAccumulatedValue' => $coinBuyTimeAccumulatedValue,
+                'coins' => [['coinId' => $coinId, 'amount' => $coinAmount]]]);
+        $this->coinloreApiService->shouldReceive("getCoinloreData")
+            ->with($coinId)
+            ->andReturn('[{"id": "90", "name": "Bitcoin", "symbol": "BTC", "price_usd": "20"}]');
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId() . '/balance');
+        $expectedBalance = ($coinCurrentValue * $coinAmount) - $coinBuyTimeAccumulatedValue;
 
-        $expectedBalance = ($coinCurrentValue * $coinAmount) - 50;
-        $response->assertOk();
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJson(['balance_usd' => $expectedBalance]);
     }
 }
