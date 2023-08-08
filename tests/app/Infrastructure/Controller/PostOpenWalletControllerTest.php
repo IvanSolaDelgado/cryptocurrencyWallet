@@ -35,7 +35,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "1"]);
 
-        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+        $response->assertStatus(JsonResponse::HTTP_BAD_REQUEST);
         $response->assertExactJson(['description' => 'User not found']);
     }
 

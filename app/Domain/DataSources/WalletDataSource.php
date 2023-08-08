@@ -14,4 +14,6 @@ interface WalletDataSource
     public function sellCoinFromWallet(string $walletId, Coin $coin, string $amountUsd): void;
 
     public function saveWalletInCache(): ?string;
+
+    public function getWalletById(string $walletId);
 }
