@@ -4,11 +4,10 @@ namespace App\Infrastructure\Controllers;
 
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\DataSources\WalletDataSource;
+use App\Http\Requests\CoinRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Validator;
 
 class PostSellCoinController extends BaseController
 {
@@ -21,28 +20,21 @@ class PostSellCoinController extends BaseController
         $this->walletDataSource = $walletDataSource;
     }
 
-    public function __invoke(Request $body): JsonResponse
+    public function __invoke(CoinRequest $coinRequest): JsonResponse
     {
-        $validator = Validator::make($body->all(), [
-            "coin_id" => "required|string",
-            "wallet_id" => "required|string",
-            "amount_usd" => "required|integer|min:0",
-        ]);
+        $coinId = $coinRequest->input('coin_id');
+        $walletId = $coinRequest->input('wallet_id');
+        $amountUsd = $coinRequest->input('amount_usd');
 
-        if ($validator->fails()) {
-            return response()->json([
-                'description' => 'bad request error'
-            ], Response::HTTP_BAD_REQUEST);
-        }
 
-        $coin = $this->coinDataSource->findById($body->input('coin_id'), $body->input('amount_usd'));
+        $coin = $this->coinDataSource->findById($coinId, $amountUsd);
         if (is_null($coin)) {
             return response()->json([
                 'description' => 'A coin with the specified ID was not found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $wallet = $this->walletDataSource->findById($body->input('wallet_id'));
+        $wallet = $this->walletDataSource->findById($walletId);
         if (is_null($wallet)) {
             return response()->json([
                 'description' => 'A wallet with the specified ID was not found'
@@ -52,7 +44,7 @@ class PostSellCoinController extends BaseController
         $this->walletDataSource->sellCoinFromWallet(
             $wallet->getWalletId(),
             $coin,
-            $body->input('amount_usd')
+            $amountUsd
         );
         return response()->json([
             'description' => 'successful operation',
