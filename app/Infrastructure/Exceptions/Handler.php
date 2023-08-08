@@ -2,7 +2,9 @@
 
 namespace App\Infrastructure\Exceptions;
 
+use App\Application\Exceptions\CoinNotFoundException;
 use App\Application\Exceptions\UserNotFoundException;
+use App\Application\Exceptions\WalletNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,10 +51,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception): Response
     {
-        if ($exception instanceof UserNotFoundException) {
+        if (
+            $exception instanceof UserNotFoundException ||
+            $exception instanceof WalletNotFoundException ||
+            $exception instanceof CoinNotFoundException
+        ) {
             return response()->json([
                 'description' => $exception->getMessage()
-            ], Response::HTTP_NOT_FOUND);
+            ], $exception->getCode());
         }
 
         return parent::render($request, $exception);
