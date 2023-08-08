@@ -66,6 +66,12 @@ class FileWalletDataSource implements WalletDataSource
                 return 'wallet_' . $i;
             }
         }
+
         return null;
+    }
+
+    public function getWalletById(string $walletId): array
+    {
+        return Cache::get('wallet_' . $walletId);
     }
 }

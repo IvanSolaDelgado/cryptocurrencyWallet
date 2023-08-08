@@ -7,6 +7,7 @@ use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Tests\TestCase;
 
 class GetsWalletCryptocurrenciesControllerTest extends TestCase
@@ -22,8 +23,8 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
-        $response->assertNotFound();
-        $response->assertExactJson(['description' => 'A wallet with the specified ID was not found']);
+        $response->assertStatus(JsonResponse::HTTP_BAD_REQUEST);
+        $response->assertExactJson(['description' => 'Wallet not found']);
     }
 
     /**
@@ -48,6 +49,6 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
         $response->assertOk();
-        $response->assertJson([$walletCoins]);
+        $response->assertJson($walletCoins);
     }
 }
