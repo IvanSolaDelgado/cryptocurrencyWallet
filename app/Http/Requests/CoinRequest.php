@@ -9,10 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CoinRequest extends FormRequest
 {
-    /**
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [
@@ -23,7 +19,6 @@ class CoinRequest extends FormRequest
     }
 
     /**
-     *
      * @param Validator $validator
      * @throws HttpResponseException
      */
