@@ -5,7 +5,7 @@ namespace Tests\app\Infrastructure\Controller;
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;
 use Mockery;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Cache;
 
@@ -35,8 +35,25 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "1"]);
 
-        $response->assertStatus(JsonResponse::HTTP_BAD_REQUEST);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
         $response->assertExactJson(['description' => 'User not found']);
+    }
+
+    /**
+     * @test
+     */
+    public function throwsErrorWhenCacheIsFull()
+    {
+        $this->userDataSource
+            ->expects("findById")
+            ->with("1")
+            ->andReturn(new User("1"));
+        Cache::shouldReceive('has')->andReturn(true);
+
+        $response = $this->post('api/wallet/open', ["user_id" => "1"]);
+
+        $response->assertStatus(Response::HTTP_INSUFFICIENT_STORAGE);
+        $response->assertExactJson(['description' => 'Cache is full']);
     }
 
     /**
@@ -55,24 +72,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "0"]);
 
-        $response->assertStatus(JsonResponse::HTTP_OK);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertExactJson(['description' => 'successful operation','wallet_id' => 'wallet_0']);
-    }
-
-    /**
-     * @test
-     */
-    public function ifGoodUserIdAndCacheIsFullThrowsError()
-    {
-        $this->userDataSource
-            ->expects("findById")
-            ->with("0")
-            ->andReturn(new User("0"));
-        Cache::shouldReceive('has')->andReturn(true);
-
-        $response = $this->post('api/wallet/open', ["user_id" => "0"]);
-
-        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
-        $response->assertExactJson(['description' => 'cache is full']);
     }
 }
