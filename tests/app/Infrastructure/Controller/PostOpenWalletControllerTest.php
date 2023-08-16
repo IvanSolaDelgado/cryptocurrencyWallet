@@ -13,7 +13,6 @@ class PostOpenWalletControllerTest extends TestCase
 {
     private UserDataSource $userDataSource;
 
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,7 +25,7 @@ class PostOpenWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function throwsErrorWhenUserIdNotFound()
+    public function throwsErrorWhenUserDoesNotExist()
     {
         $this->userDataSource
         ->expects("findById")
@@ -42,7 +41,24 @@ class PostOpenWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function createsWalletWhenUserIsFound()
+    public function throwsErrorWhenCacheIsFull()
+    {
+        $this->userDataSource
+            ->expects("findById")
+            ->with("1")
+            ->andReturn(new User("1"));
+        Cache::shouldReceive('has')->andReturn(true);
+
+        $response = $this->post('api/wallet/open', ["user_id" => "1"]);
+
+        $response->assertStatus(Response::HTTP_INSUFFICIENT_STORAGE);
+        $response->assertExactJson(['description' => 'Cache is full']);
+    }
+
+    /**
+     * @test
+     */
+    public function createsWalletWhenUserExists()
     {
         $this->userDataSource
             ->expects("findById")
@@ -57,22 +73,5 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertExactJson(['description' => 'successful operation','wallet_id' => 'wallet_0']);
-    }
-
-    /**
-     * @test
-     */
-    public function ifGoodUserIdAndCacheIsFullThrowsError()
-    {
-        $this->userDataSource
-            ->expects("findById")
-            ->with("0")
-            ->andReturn(new User("0"));
-        Cache::shouldReceive('has')->andReturn(true);
-
-        $response = $this->post('api/wallet/open', ["user_id" => "0"]);
-
-        $response->assertStatus(Response::HTTP_NOT_FOUND);
-        $response->assertExactJson(['description' => 'cache is full']);
     }
 }
