@@ -9,7 +9,7 @@ use App\Domain\DataSources\CoinDataSource;
 use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use Mockery;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class WalletBalanceServiceTest extends TestCase
@@ -40,7 +40,7 @@ class WalletBalanceServiceTest extends TestCase
 
         $this->expectException(WalletNotFoundException::class);
         $this->expectExceptionMessage('Wallet not found');
-        $this->expectExceptionCode(JsonResponse::HTTP_BAD_REQUEST);
+        $this->expectExceptionCode(Response::HTTP_NOT_FOUND);
 
         $this->walletBalanceService->getsBalance("notFound");
     }

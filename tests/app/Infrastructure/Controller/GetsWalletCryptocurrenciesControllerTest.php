@@ -21,7 +21,7 @@ class GetsWalletCryptocurrenciesControllerTest extends TestCase
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'Wallet not found']);
     }
 

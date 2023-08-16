@@ -13,7 +13,6 @@ class PostOpenWalletControllerTest extends TestCase
 {
     private UserDataSource $userDataSource;
 
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,7 +25,7 @@ class PostOpenWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function throwsErrorWhenUserIdNotFound()
+    public function throwsErrorWhenUserDoesNotExist()
     {
         $this->userDataSource
         ->expects("findById")
@@ -35,7 +34,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "1"]);
 
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'User not found']);
     }
 
