@@ -41,7 +41,7 @@ class PostSellCoinControllerTest extends TestCase
             ]
         );
 
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(
             [
                 'description' => 'Coin not found'
@@ -71,7 +71,7 @@ class PostSellCoinControllerTest extends TestCase
             ]
         );
 
-        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(
             [
                 'description' => 'Wallet not found'

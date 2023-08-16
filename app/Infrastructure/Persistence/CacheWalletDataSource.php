@@ -19,24 +19,27 @@ class CacheWalletDataSource implements WalletDataSource
 
     public function insertCoinInWallet(string $walletId, Coin $coin): void
     {
-        $wallet = Cache::get('wallet_' . $walletId);
-        $wallet['BuyTimeAccumulatedValue'] += ($coin->getValueUsd() * $coin->getAmount());
-        $inserted = false;
-        $coinPositionInWalletArray = 0;
-        foreach ($wallet['coins'] as $coinInCache) {
-            if ($coinInCache['coinId'] == $coin->getId()) {
-                $newAmount = $coinInCache['amount'] + $coin->getAmount();
-                $coin->setAmount($newAmount);
-                $wallet['coins'][$coinPositionInWalletArray] = $coin->getJsonData();
-                $inserted = true;
+        if (Cache::has('wallet_' . $walletId)) {
+            $wallet = Cache::get('wallet_' . $walletId);
+            $wallet['BuyTimeAccumulatedValue'] += ($coin->getValueUsd() * $coin->getAmount());
+            $inserted = false;
+            $coinPositionInWalletArray = 0;
+            foreach ($wallet['coins'] as $coinInCache) {
+                if ($coinInCache['coinId'] == $coin->getId()) {
+                    $newAmount = $coinInCache['amount'] + $coin->getAmount();
+                    $coin->setAmount($newAmount);
+                    $wallet['coins'][$coinPositionInWalletArray] = $coin->getJsonData();
+                    $inserted = true;
+                }
+                $coinPositionInWalletArray++;
             }
-            $coinPositionInWalletArray++;
-        }
 
-        if (!$inserted) {
-            array_push($wallet['coins'], $coin->getJsonData());
+            if (!$inserted) {
+                array_push($wallet['coins'], $coin->getJsonData());
+            }
+
+            Cache::put('wallet_' . $walletId, $wallet);
         }
-        Cache::put('wallet_' . $walletId, $wallet);
     }
 
     public function sellCoinFromWallet(string $walletId, Coin $coin, string $amountUsd): void

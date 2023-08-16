@@ -4,6 +4,7 @@ namespace Tests\app\Infrastructure\DataSources;
 
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
+use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use App\Infrastructure\Persistence\CacheWalletDataSource;
 use Illuminate\Support\Facades\Cache;
@@ -13,10 +14,13 @@ use Tests\TestCase;
 class WalletDataSourceTest extends TestCase
 {
     private CoinDataSource $coinDataSource;
+    private WalletDataSource $walletDataSource;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->walletDataSource = new CacheWalletDataSource();
         $this->coinDataSource = Mockery::mock(CoinDataSource::class);
         $this->app->bind(CoinDataSource::class, function () {
             return $this->coinDataSource;
@@ -28,11 +32,9 @@ class WalletDataSourceTest extends TestCase
      */
     public function doesNotFindAWalletIfWalletDoesNotExist()
     {
-        $walletDataSource = new CacheWalletDataSource();
-
         Cache::shouldReceive('has')->andReturn(false);
 
-        $this->assertEquals(null, $walletDataSource->findById('wallet_0'));
+        $this->assertEquals(null, $this->walletDataSource->findById('wallet_0'));
     }
 
     /**
@@ -40,11 +42,9 @@ class WalletDataSourceTest extends TestCase
      */
     public function findAWalletIfWalletExists()
     {
-        $walletDataSource = new CacheWalletDataSource();
-
         Cache::shouldReceive('has')->andReturn(true);
 
-        $this->assertEquals(new Wallet('wallet_0'), $walletDataSource->findById('wallet_0'));
+        $this->assertEquals(new Wallet('wallet_0'), $this->walletDataSource->findById('wallet_0'));
     }
 
     /**
@@ -52,14 +52,12 @@ class WalletDataSourceTest extends TestCase
      */
     public function savesWalletWhenCacheIsNotFull()
     {
-        $walletDataSource = new CacheWalletDataSource();
-
         Cache::shouldReceive('has')->andReturn(false);
         Cache::shouldReceive('put')
             ->once()
             ->with('wallet_0', Mockery::type('array'));
 
-        $this->assertEquals('wallet_0', $walletDataSource->saveWalletInCache());
+        $this->assertEquals('wallet_0', $this->walletDataSource->saveWalletInCache());
     }
 
     /**
@@ -67,40 +65,84 @@ class WalletDataSourceTest extends TestCase
      */
     public function returnsNullWhenCacheIsFull()
     {
-        $walletDataSource = new CacheWalletDataSource();
-
         Cache::shouldReceive('has')->andReturn(true);
 
-        $this->assertEquals(null, $walletDataSource->saveWalletInCache());
+        $this->assertEquals(null, $this->walletDataSource->saveWalletInCache());
     }
 
     /**
      * @test
      */
-    public function whenHappyPathBuyingCoinPurchaseCached()
+    public function doesNotSellCoinFromWalletWhenWalletDoesNotExist()
     {
-        $coin = new Coin(
-            "90",
-            "Bitcoin",
-            "BTC",
-            1,
-            1
+        $coin = new Coin('90', 'Bitcoin', 'BTC', 32, 21312);
+
+        Cache::shouldReceive('has')->once()->andReturn(false);
+        Cache::shouldReceive('get')->never();
+        Cache::shouldReceive('put')->never();
+
+        $this->walletDataSource->sellCoinFromWallet('0', $coin, 4);
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotInsertCoinInWalletWhenWalletDoesNotExist()
+    {
+        $coin = new Coin('90', 'Bitcoin', 'BTC', 32, 21312);
+
+        Cache::shouldReceive('has')->once()->andReturn(false);
+        Cache::shouldReceive('get')->never();
+        Cache::shouldReceive('put')->never();
+
+        $this->walletDataSource->insertCoinInWallet('0', $coin);
+    }
+
+    /**
+     * @test
+     */
+    public function insertsCoinInWalletWhenWalletExists()
+    {
+        $coin = new Coin('90', 'Bitcoin', 'BTC', 4, 26829.64);
+
+        Cache::shouldReceive('has')->andReturn(true);
+        Cache::shouldReceive('get')->once()->with('wallet_0')->andReturn(
+            [
+                'walletId' => '0',
+                'BuyTimeAccumulatedValue' => 0,
+                'coins' => [],
+            ]
         );
-        $this->coinDataSource
-            ->expects("findById")
-            ->with("90", "1")
-            ->andReturn($coin);
+        Cache::shouldReceive('put')
+            ->with('wallet_0', Mockery::type('array'));
 
-        if (!Cache::has('wallet_0')) {
-            $walletDataSource = new CacheWalletDataSource();
-            $walletDataSource->saveWalletInCache();
-        }
+        $this->walletDataSource->insertCoinInWallet('0', $coin);
+    }
 
-        $this->post('api/coin/buy', ["coin_id" => "90",
-                                                    "wallet_id" => "0",
-                                                    "amount_usd" => 1]);
+    /**
+     * @test
+     */
+    public function sellsCoinFromWalletWhenWalletExists()
+    {
+        $coin = new Coin('90', 'Bitcoin', 'BTC', 4, 26829.64);
 
-        $wallet = Cache::get('wallet_0');
-        self::assertEquals($wallet['coins'][0], $coin->getJsonData());
+        Cache::shouldReceive('has')->andReturn(true);
+        Cache::shouldReceive('get')->once()->with('wallet_0')->andReturn(
+            [
+                "walletId" => "0",
+                "BuyTimeAccumulatedValue" => 0,
+                "coins" => [[
+                    "coinId" => "90",
+                    "name" => "Bitcoin",
+                    "symbol" => "BTC",
+                    "amount" => 4,
+                    "valueUsd" => 26829.64,
+                ]]
+            ]
+        );
+        Cache::shouldReceive('put')
+            ->with('wallet_0', Mockery::type('array'));
+
+        $this->walletDataSource->sellCoinFromWallet('0', $coin, 2);
     }
 }
