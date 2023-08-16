@@ -25,7 +25,7 @@ class PostBuyCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function doesNotBuyCoinWhenCoinDoesNotExist()
+    public function coinIdWasNotFoundWhenCoinDoesNotExist()
     {
         $this->coinDataSource
             ->expects("findById")
@@ -52,7 +52,7 @@ class PostBuyCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function doesNotBuyCoinWhenWalletDoesNotExist()
+    public function coinIdWasNotFoundWhenWalletDoesNotExist()
     {
         $this->coinDataSource
             ->expects("findById")
@@ -86,18 +86,13 @@ class PostBuyCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function buysCoinWhenCoinAndWalletExist()
+    public function successfullyBuyOperation()
     {
+        $coin = new Coin("coin_id_value", "name_value", "symbol_value", 1, 1);
         $this->coinDataSource
             ->expects("findById")
             ->with("coin_id_value", "1")
-            ->andReturn(new Coin(
-                "coin_id_value",
-                "name_value",
-                "symbol_value",
-                1,
-                1
-            ));
+            ->andReturn($coin);
         Cache::shouldReceive('has')->once()->with('wallet_0')->andReturn(true);
         Cache::shouldReceive('has')->once()->with('wallet_0')->andReturn(true);
         Cache::shouldReceive('get')->once()->with("wallet_0")->andReturn(
