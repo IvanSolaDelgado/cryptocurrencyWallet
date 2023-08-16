@@ -9,18 +9,27 @@ use Tests\TestCase;
 
 class OpenWalletRequestTest extends TestCase
 {
+    private OpenWalletRequest $openWalletRequest;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->openWalletRequest = new OpenWalletRequest();
+    }
+
+
     /**
      * @test
      */
     public function itFailsValidationWhenUserIdIsNotProvided()
     {
-        $openWalletRequest = new OpenWalletRequest();
         $data = [];
         $expectedErrors = new MessageBag([
             'user_id' => ['The user id field is required.'],
         ]);
 
-        $validator = Validator::make($data, $openWalletRequest->rules());
+        $validator = Validator::make($data, $this->openWalletRequest->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertEquals($expectedErrors, $validator->errors());
@@ -31,7 +40,6 @@ class OpenWalletRequestTest extends TestCase
      */
     public function itFailsValidationWhenUserIdIsNotAString()
     {
-        $openWalletRequest = new OpenWalletRequest();
         $data = [
             'user_id' => 12345,
         ];
@@ -39,7 +47,7 @@ class OpenWalletRequestTest extends TestCase
             'user_id' => ['The user id must be a string.'],
         ]);
 
-        $validator = Validator::make($data, $openWalletRequest->rules());
+        $validator = Validator::make($data, $this->openWalletRequest->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertEquals($expectedErrors, $validator->errors());
@@ -53,9 +61,8 @@ class OpenWalletRequestTest extends TestCase
         $data = [
             'user_id' => '1',
         ];
-        $request = new OpenWalletRequest();
 
-        $validator = $this->app['validator']->make($data, $request->rules());
+        $validator = $this->app['validator']->make($data, $this->openWalletRequest->rules());
 
         $this->assertTrue($validator->passes());
     }

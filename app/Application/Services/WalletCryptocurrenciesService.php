@@ -18,7 +18,7 @@ class WalletCryptocurrenciesService
     /**
      * @throws WalletNotFoundException
      */
-    public function getWalletCryptocurrencies($walletId): array
+    public function execute($walletId): array
     {
         $wallet = $this->walletDataSource->findById($walletId);
         if (is_null($wallet)) {

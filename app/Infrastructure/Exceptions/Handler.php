@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Exceptions;
 
+use App\Application\Exceptions\CacheFullException;
+use App\Application\Exceptions\CoinNotFoundException;
 use App\Application\Exceptions\UserNotFoundException;
 use App\Application\Exceptions\WalletNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -50,7 +52,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception): Response
     {
-        if ($exception instanceof UserNotFoundException || $exception instanceof WalletNotFoundException) {
+        if (
+            $exception instanceof UserNotFoundException ||
+            $exception instanceof WalletNotFoundException ||
+            $exception instanceof CacheFullException ||
+            $exception instanceof CoinNotFoundException
+        ) {
             return response()->json([
                 'description' => $exception->getMessage()
             ], $exception->getCode());
