@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class GetsWalletCryptocurrenciesControllerTest extends TestCase
+class WalletCryptocurrenciesControllerTest extends TestCase
 {
     /**
      * @test

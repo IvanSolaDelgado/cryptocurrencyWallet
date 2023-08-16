@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Validator;
 
-class PostBuyCoinController extends BaseController
+class BuyCoinController extends BaseController
 {
     private CoinDataSource $coinDataSource;
     private WalletDataSource $walletDataSource;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Http\Requests;
+namespace App\Infrastructure\Controllers\OpenWallet;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;

@@ -11,7 +11,7 @@ use Mockery;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class GetsWalletBalanceControllerTest extends TestCase
+class WalletBalanceControllerTest extends TestCase
 {
     private CoinloreApiService $coinloreApiService;
     private ApiCoinDataSource $apiCoinDataSource;

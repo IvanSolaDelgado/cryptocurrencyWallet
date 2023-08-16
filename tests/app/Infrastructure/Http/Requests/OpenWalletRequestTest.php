@@ -2,7 +2,7 @@
 
 namespace Tests\app\Infrastructure\Http\Requests;
 
-use App\Infrastructure\Http\Requests\OpenWalletRequest;
+use App\Infrastructure\Controllers\OpenWallet\OpenWalletRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 use Tests\TestCase;

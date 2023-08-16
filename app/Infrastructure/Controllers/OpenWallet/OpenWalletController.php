@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Infrastructure\Controllers;
+namespace App\Infrastructure\Controllers\OpenWallet;
 
 use App\Application\Services\OpenWalletService;
-use App\Infrastructure\Http\Requests\OpenWalletRequest;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
-class PostOpenWalletController extends BaseController
+class OpenWalletController extends BaseController
 {
     public function __invoke(OpenWalletRequest $openWalletRequest, OpenWalletService $openWalletService): JsonResponse
     {

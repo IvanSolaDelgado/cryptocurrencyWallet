@@ -1,10 +1,10 @@
 <?php
 
-use App\Infrastructure\Controllers\GetsWalletBalanceController;
-use App\Infrastructure\Controllers\GetsWalletCryptocurrenciesController;
-use App\Infrastructure\Controllers\PostOpenWalletController;
-use App\Infrastructure\Controllers\PostBuyCoinController;
-use App\Infrastructure\Controllers\PostSellCoinController;
+use App\Infrastructure\Controllers\WalletBalanceController;
+use App\Infrastructure\Controllers\WalletCryptocurrenciesController;
+use App\Infrastructure\Controllers\OpenWallet\OpenWalletController;
+use App\Infrastructure\Controllers\BuyCoinController;
+use App\Infrastructure\Controllers\SellCoinController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/wallet/{wallet_id}', GetsWalletCryptocurrenciesController::class);
-Route::post('/wallet/open', PostOpenWalletController::class);
-Route::post('/coin/buy', PostBuyCoinController::class);
-Route::post('/coin/sell', PostSellCoinController::class);
-Route::get('/wallet/{wallet_id}/balance', GetsWalletBalanceController::class);
+Route::get('/wallet/{wallet_id}', WalletCryptocurrenciesController::class);
+Route::post('/wallet/open', OpenWalletController::class);
+Route::post('/coin/buy', BuyCoinController::class);
+Route::post('/coin/sell', SellCoinController::class);
+Route::get('/wallet/{wallet_id}/balance', WalletBalanceController::class);

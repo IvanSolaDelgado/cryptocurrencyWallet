@@ -10,7 +10,7 @@ use Mockery;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class PostSellCoinControllerTest extends TestCase
+class SellCoinControllerTest extends TestCase
 {
     private CoinDataSource $coinDataSource;
     private WalletDataSource $walletDataSource;

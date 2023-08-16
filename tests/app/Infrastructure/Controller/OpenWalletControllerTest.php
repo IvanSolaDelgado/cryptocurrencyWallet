@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Cache;
 
-class PostOpenWalletControllerTest extends TestCase
+class OpenWalletControllerTest extends TestCase
 {
     private UserDataSource $userDataSource;
 
