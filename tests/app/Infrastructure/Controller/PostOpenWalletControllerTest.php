@@ -5,7 +5,7 @@ namespace Tests\app\Infrastructure\Controller;
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;
 use Mockery;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Cache;
 
@@ -35,7 +35,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "1"]);
 
-        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'User not found']);
     }
 
@@ -55,7 +55,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "0"]);
 
-        $response->assertStatus(JsonResponse::HTTP_OK);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertExactJson(['description' => 'successful operation','wallet_id' => 'wallet_0']);
     }
 
@@ -72,7 +72,7 @@ class PostOpenWalletControllerTest extends TestCase
 
         $response = $this->post('api/wallet/open', ["user_id" => "0"]);
 
-        $response->assertStatus(JsonResponse::HTTP_NOT_FOUND);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(['description' => 'cache is full']);
     }
 }

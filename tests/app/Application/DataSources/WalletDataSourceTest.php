@@ -116,7 +116,6 @@ class WalletDataSourceTest extends TestCase
         Cache::shouldReceive('put')
             ->with('wallet_0', Mockery::type('array'));
 
-
         $this->walletDataSource->insertCoinInWallet('0', $coin);
     }
 
