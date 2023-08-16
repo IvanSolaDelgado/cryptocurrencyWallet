@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-class CoinRequest extends FormRequest
+class SellCoinRequest extends FormRequest
 {
     public function rules(): array
     {

@@ -4,7 +4,7 @@ namespace App\Infrastructure\Controllers;
 
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\DataSources\WalletDataSource;
-use App\Http\Requests\CoinRequest;
+use App\Http\Requests\SellCoinRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
@@ -20,7 +20,7 @@ class PostSellCoinController extends BaseController
         $this->walletDataSource = $walletDataSource;
     }
 
-    public function __invoke(CoinRequest $coinRequest): JsonResponse
+    public function __invoke(SellCoinRequest $coinRequest): JsonResponse
     {
         $coinId = $coinRequest->input('coin_id');
         $walletId = $coinRequest->input('wallet_id');
