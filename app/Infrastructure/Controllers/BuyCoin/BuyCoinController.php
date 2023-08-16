@@ -5,7 +5,6 @@ namespace App\Infrastructure\Controllers\BuyCoin;
 use App\Application\Exceptions\CoinNotFoundException;
 use App\Application\Exceptions\WalletNotFoundException;
 use App\Application\Services\BuyCoinService;
-use App\Infrastructure\Controllers\BuyCoin\BuyCoinRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;
