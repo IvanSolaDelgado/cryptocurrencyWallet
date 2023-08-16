@@ -2,52 +2,33 @@
 
 namespace App\Infrastructure\Controllers;
 
-use App\Domain\DataSources\CoinDataSource;
-use App\Domain\DataSources\WalletDataSource;
+use App\Application\Exceptions\CoinNotFoundException;
+use App\Application\Exceptions\WalletNotFoundException;
+use App\Application\Services\BuyCoinService;
+use App\Http\Requests\BuyCoinRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostBuyCoinController extends BaseController
 {
-    private CoinDataSource $coinDataSource;
-    private WalletDataSource $walletDataSource;
-
-    public function __construct(CoinDataSource $coinDataSource, WalletDataSource $walletDataSource)
+    /**
+     * @throws WalletNotFoundException
+     * @throws CoinNotFoundException
+     */
+    public function __invoke(BuyCoinRequest $buyCoinRequest, BuyCoinService $buyCoinService): JsonResponse
     {
-        $this->coinDataSource = $coinDataSource;
-        $this->walletDataSource = $walletDataSource;
-    }
+        $coinId = $buyCoinRequest->input('coin_id');
+        $amountUsd = $buyCoinRequest->input('amount_usd');
+        $walletId = $buyCoinRequest->input('wallet_id');
 
-    public function __invoke(Request $body): JsonResponse
-    {
-        $validator = Validator::make($body->all(), [
-                "coin_id" => "required|string",
-                "wallet_id" => "required|string",
-                "amount_usd" => "required|integer|min:0",
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'description' => 'bad request error'
-            ], Response::HTTP_BAD_REQUEST);
-        }
-        $coin = $this->coinDataSource->findById($body->input('coin_id'), $body->input('amount_usd'));
-        if (is_null($coin)) {
-            return response()->json([
-                'description' => 'A coin with the specified ID was not found.'
-            ], Response::HTTP_NOT_FOUND);
-        }
-        $wallet = $this->walletDataSource->findById($body->input('wallet_id'));
-        if (is_null($wallet)) {
-            return response()->json([
-                'description' => 'A wallet with the specified ID was not found'
-            ], Response::HTTP_NOT_FOUND);
-        }
-        $this->walletDataSource->insertCoinInWallet($wallet->getWalletId(), $coin);
-        return response()->json([
-            'description' => 'successful operation'
-        ], Response::HTTP_OK);
+        $buyCoinService->execute($coinId, $walletId, $amountUsd);
+
+        return response()->json(
+            [
+                'description' => 'successful operation'
+            ],
+            Response::HTTP_OK
+        );
     }
 }
