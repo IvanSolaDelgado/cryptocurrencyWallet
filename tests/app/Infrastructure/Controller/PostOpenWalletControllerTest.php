@@ -59,7 +59,7 @@ class PostOpenWalletControllerTest extends TestCase
     /**
      * @test
      */
-    public function createsWalletWhenUserIsFound()
+    public function createsWalletWhenUserExists()
     {
         $this->userDataSource
             ->expects("findById")
