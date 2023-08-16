@@ -44,7 +44,7 @@ class PostBuyCoinControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(
             [
-                'description' => 'A coin with the specified ID was not found.'
+                'description' => 'Coin not found'
             ]
         );
     }
@@ -78,7 +78,7 @@ class PostBuyCoinControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_NOT_FOUND);
         $response->assertExactJson(
             [
-                'description' => 'A wallet with the specified ID was not found'
+                'description' => 'Wallet not found'
             ]
         );
     }

@@ -2,13 +2,13 @@
 
 namespace App\Application\Exceptions;
 
-use Exception;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
-class UserNotFoundException extends Exception
+class CoinNotFoundException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('User not found', Response::HTTP_NOT_FOUND);
+        parent::__construct('Coin not found', Response::HTTP_NOT_FOUND);
     }
 }
