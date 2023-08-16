@@ -2,20 +2,20 @@
 
 namespace Tests\app\Http\Requests;
 
-use App\Http\Requests\CoinRequest;
+use App\Http\Requests\SellCoinRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 use Tests\TestCase;
 
-class CoinRequestTest extends TestCase
+class SellCoinRequestTest extends TestCase
 {
-    private CoinRequest $coinRequest;
+    private SellCoinRequest $coinRequest;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->coinRequest = new CoinRequest();
+        $this->coinRequest = new SellCoinRequest();
     }
 
     /**
