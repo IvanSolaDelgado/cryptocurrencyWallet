@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller\OpenWallet;
+namespace Tests\app\Infrastructure\Controllers\OpenWallet;
 
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;

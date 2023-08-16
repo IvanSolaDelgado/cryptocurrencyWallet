@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Infrastructure\Controllers;
+namespace App\Infrastructure\Controllers\WalletBalance;
 
-use App\Application\Services\WalletCryptocurrenciesService;
+use App\Application\Exceptions\WalletNotFoundException;
+use App\Application\Services\WalletBalanceService;
 use App\Infrastructure\Controllers\Validators\WalletIdValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
-class WalletCryptocurrenciesController extends BaseController
+class WalletBalanceController extends BaseController
 {
+    /**
+     * @throws WalletNotFoundException
+     */
     public function __invoke(
         $walletId,
         WalletIdValidator $walletIdValidator,
-        WalletCryptocurrenciesService $walletCryptocurrenciesService
+        WalletBalanceService $walletBalanceService
     ): JsonResponse {
         if (!$walletIdValidator->validateWalletId($walletId)) {
             return response()->json(
@@ -25,8 +29,13 @@ class WalletCryptocurrenciesController extends BaseController
             );
         }
 
-        $walletCryptocurrencies = $walletCryptocurrenciesService->execute($walletId);
+        $balance = $walletBalanceService->execute($walletId);
 
-        return response()->json($walletCryptocurrencies, Response::HTTP_OK);
+        return response()->json(
+            [
+                'balance_usd' => $balance
+            ],
+            Response::HTTP_OK
+        );
     }
 }

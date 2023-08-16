@@ -3,8 +3,8 @@
 use App\Infrastructure\Controllers\BuyCoin\BuyCoinController;
 use App\Infrastructure\Controllers\OpenWallet\OpenWalletController;
 use App\Infrastructure\Controllers\SellCoin\SellCoinController;
-use App\Infrastructure\Controllers\WalletBalanceController;
-use App\Infrastructure\Controllers\WalletCryptocurrenciesController;
+use App\Infrastructure\Controllers\WalletBalance\WalletBalanceController;
+use App\Infrastructure\Controllers\WalletCryptocurrencies\WalletCryptocurrenciesController;
 use Illuminate\Support\Facades\Route;
 
 /*
