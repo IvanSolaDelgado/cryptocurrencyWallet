@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Controllers\BuyCoin;
 
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
@@ -9,7 +9,7 @@ use Mockery;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class PostSellCoinControllerTest extends TestCase
+class BuyCoinControllerTest extends TestCase
 {
     private CoinDataSource $coinDataSource;
 
@@ -33,7 +33,7 @@ class PostSellCoinControllerTest extends TestCase
             ->andReturn(null);
 
         $response = $this->post(
-            'api/coin/sell',
+            'api/coin/buy',
             [
                 "coin_id" => "coin_id_value",
                 "wallet_id" => "wallet_id_value",
@@ -52,18 +52,22 @@ class PostSellCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function walletIdWasNotFoundWhenWalletDoesNotExist()
+    public function coinIdWasNotFoundWhenWalletDoesNotExist()
     {
-        $coin = new Coin("coin_id_value", "name_value", "symbol_value", 1, 1);
-
         $this->coinDataSource
             ->expects("findById")
             ->with("coin_id_value", "1")
-            ->andReturn($coin);
+            ->andReturn(new Coin(
+                "coin_id_value",
+                "name_value",
+                "symbol_value",
+                1,
+                1
+            ));
         Cache::shouldReceive('has')->once()->with('wallet_0')->andReturn(false);
 
         $response = $this->post(
-            'api/coin/sell',
+            'api/coin/buy',
             [
                 "coin_id" => "coin_id_value",
                 "wallet_id" => "0",
@@ -82,10 +86,9 @@ class PostSellCoinControllerTest extends TestCase
     /**
      * @test
      */
-    public function sellsCoinWhenCoinAndWalletExist()
+    public function successfullyBuyOperation()
     {
         $coin = new Coin("coin_id_value", "name_value", "symbol_value", 1, 1);
-
         $this->coinDataSource
             ->expects("findById")
             ->with("coin_id_value", "1")
@@ -103,7 +106,7 @@ class PostSellCoinControllerTest extends TestCase
             ->with("wallet_0", Mockery::type('array'));
 
         $response = $this->post(
-            'api/coin/sell',
+            'api/coin/buy',
             [
                 "coin_id" => "coin_id_value",
                 "wallet_id" => "0",

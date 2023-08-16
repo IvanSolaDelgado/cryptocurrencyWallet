@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Infrastructure\Controllers;
+namespace App\Infrastructure\Controllers\WalletCryptocurrencies;
 
 use App\Application\Services\WalletCryptocurrenciesService;
-use App\Validators\WalletIdValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
-class GetsWalletCryptocurrenciesController extends BaseController
+class WalletCryptocurrenciesController extends BaseController
 {
     public function __invoke(
         $walletId,
-        WalletIdValidator $walletIdValidator,
+        CryptocurrenciesWalletIdValidator $walletIdValidator,
         WalletCryptocurrenciesService $walletCryptocurrenciesService
     ): JsonResponse {
         if (!$walletIdValidator->validateWalletId($walletId)) {

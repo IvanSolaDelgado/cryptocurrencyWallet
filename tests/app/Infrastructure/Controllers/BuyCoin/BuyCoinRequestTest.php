@@ -1,21 +1,21 @@
 <?php
 
-namespace Tests\app\Http\Requests;
+namespace Tests\app\Infrastructure\Controllers\BuyCoin;
 
-use App\Http\Requests\SellCoinRequest;
+use App\Infrastructure\Controllers\BuyCoin\BuyCoinRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 use Tests\TestCase;
 
-class SellCoinRequestTest extends TestCase
+class BuyCoinRequestTest extends TestCase
 {
-    private SellCoinRequest $coinRequest;
+    private BuyCoinRequest $buyCoinRequest;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->coinRequest = new SellCoinRequest();
+        $this->buyCoinRequest = new BuyCoinRequest();
     }
 
     /**
@@ -26,12 +26,12 @@ class SellCoinRequestTest extends TestCase
         $data = [
             "wallet_id" => "0",
             "amount_usd" => 1,
-        ];
+            ];
         $expectedErrors = new MessageBag([
             'coin_id' => ['The coin id field is required.'],
         ]);
 
-        $validator = Validator::make($data, $this->coinRequest->rules());
+        $validator = Validator::make($data, $this->buyCoinRequest->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertEquals($expectedErrors, $validator->errors());
@@ -51,7 +51,7 @@ class SellCoinRequestTest extends TestCase
             'coin_id' => ['The coin id must be a string.'],
         ]);
 
-        $validator = Validator::make($data, $this->coinRequest->rules());
+        $validator = Validator::make($data, $this->buyCoinRequest->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertEquals($expectedErrors, $validator->errors());
@@ -70,7 +70,7 @@ class SellCoinRequestTest extends TestCase
             'wallet_id' => ['The wallet id field is required.'],
         ]);
 
-        $validator = Validator::make($data, $this->coinRequest->rules());
+        $validator = Validator::make($data, $this->buyCoinRequest->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertEquals($expectedErrors, $validator->errors());
@@ -90,7 +90,7 @@ class SellCoinRequestTest extends TestCase
             'wallet_id' => ['The wallet id must be a string.'],
         ]);
 
-        $validator = Validator::make($data, $this->coinRequest->rules());
+        $validator = Validator::make($data, $this->buyCoinRequest->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertEquals($expectedErrors, $validator->errors());
@@ -109,7 +109,7 @@ class SellCoinRequestTest extends TestCase
             'amount_usd' => ['The amount usd field is required.'],
         ]);
 
-        $validator = Validator::make($data, $this->coinRequest->rules());
+        $validator = Validator::make($data, $this->buyCoinRequest->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertEquals($expectedErrors, $validator->errors());
@@ -129,7 +129,7 @@ class SellCoinRequestTest extends TestCase
             'amount_usd' => ['The amount usd must be at least 0.'],
         ]);
 
-        $validator = Validator::make($data, $this->coinRequest->rules());
+        $validator = Validator::make($data, $this->buyCoinRequest->rules());
 
         $this->assertTrue($validator->fails());
         $this->assertEquals($expectedErrors, $validator->errors());
@@ -146,7 +146,7 @@ class SellCoinRequestTest extends TestCase
             "amount_usd" => 0,
         ];
 
-        $validator = Validator::make($data, $this->coinRequest->rules());
+        $validator = Validator::make($data, $this->buyCoinRequest->rules());
 
         $this->assertTrue($validator->passes());
     }

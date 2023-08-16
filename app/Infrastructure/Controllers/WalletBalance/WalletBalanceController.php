@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Infrastructure\Controllers;
+namespace App\Infrastructure\Controllers\WalletBalance;
 
 use App\Application\Exceptions\WalletNotFoundException;
 use App\Application\Services\WalletBalanceService;
-use App\Validators\WalletIdValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
-class GetsWalletBalanceController extends BaseController
+class WalletBalanceController extends BaseController
 {
     /**
      * @throws WalletNotFoundException
      */
     public function __invoke(
         $walletId,
-        WalletIdValidator $walletIdValidator,
+        BalanceWalletIdValidator $walletIdValidator,
         WalletBalanceService $walletBalanceService
     ): JsonResponse {
         if (!$walletIdValidator->validateWalletId($walletId)) {

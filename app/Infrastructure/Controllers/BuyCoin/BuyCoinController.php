@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Infrastructure\Controllers;
+namespace App\Infrastructure\Controllers\BuyCoin;
 
 use App\Application\Exceptions\CoinNotFoundException;
 use App\Application\Exceptions\WalletNotFoundException;
 use App\Application\Services\BuyCoinService;
-use App\Http\Requests\BuyCoinRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostBuyCoinController extends BaseController
+class BuyCoinController extends BaseController
 {
     /**
      * @throws WalletNotFoundException

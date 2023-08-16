@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Infrastructure\Controllers;
+namespace App\Infrastructure\Controllers\OpenWallet;
 
 use App\Application\Exceptions\CacheFullException;
 use App\Application\Exceptions\UserNotFoundException;
 use App\Application\Services\OpenWalletService;
-use App\Http\Requests\OpenWalletRequest;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
-class PostOpenWalletController extends BaseController
+class OpenWalletController extends BaseController
 {
     /**
      * @throws CacheFullException

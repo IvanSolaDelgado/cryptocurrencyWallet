@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Infrastructure\Controllers;
+namespace App\Infrastructure\Controllers\SellCoin;
 
 use App\Application\Exceptions\CoinNotFoundException;
 use App\Application\Exceptions\WalletNotFoundException;
 use App\Application\Services\SellCoinService;
-use App\Http\Requests\SellCoinRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
-class PostSellCoinController extends BaseController
+class SellCoinController extends BaseController
 {
     /**
      * @throws CoinNotFoundException
      * @throws WalletNotFoundException
      */
-    public function __invoke(SellCoinRequest $coinRequest, SellCoinService $sellCoinService): JsonResponse
+    public function __invoke(SellCoinRequest $sellCoinRequest, SellCoinService $sellCoinService): JsonResponse
     {
-        $coinId = $coinRequest->input('coin_id');
-        $walletId = $coinRequest->input('wallet_id');
-        $amountUsd = $coinRequest->input('amount_usd');
+        $coinId = $sellCoinRequest->input('coin_id');
+        $walletId = $sellCoinRequest->input('wallet_id');
+        $amountUsd = $sellCoinRequest->input('amount_usd');
 
         $sellCoinService->execute($coinId, $walletId, $amountUsd);
 

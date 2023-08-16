@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Controllers\WalletCryptocurrencies;
 
 use App\Domain\Coin;
 use App\Domain\Wallet;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class GetsWalletCryptocurrenciesControllerTest extends TestCase
+class WalletCryptocurrenciesControllerTest extends TestCase
 {
     /**
      * @test

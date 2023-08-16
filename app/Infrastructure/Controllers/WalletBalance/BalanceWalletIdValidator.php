@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Validators;
+namespace App\Infrastructure\Controllers\WalletBalance;
 
 use Illuminate\Support\Facades\Validator;
 
-class WalletIdValidator
+class BalanceWalletIdValidator
 {
     public function validateWalletId($wallet_id): bool
     {

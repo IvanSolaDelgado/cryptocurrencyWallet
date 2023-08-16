@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Controllers\WalletBalance;
 
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\Wallet;
@@ -11,7 +11,7 @@ use Mockery;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class GetsWalletBalanceControllerTest extends TestCase
+class WalletBalanceControllerTest extends TestCase
 {
     private CoinloreApiService $coinloreApiService;
     private ApiCoinDataSource $apiCoinDataSource;

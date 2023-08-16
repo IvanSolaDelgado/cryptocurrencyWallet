@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Controllers\OpenWallet;
 
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;
+use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Cache;
 
-class PostOpenWalletControllerTest extends TestCase
+class OpenWalletControllerTest extends TestCase
 {
     private UserDataSource $userDataSource;
 

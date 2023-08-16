@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\app\Validators;
+namespace Tests\app\Infrastructure\Controllers\WalletBalance;
 
-use App\Validators\WalletIdValidator;
+use App\Infrastructure\Controllers\WalletBalance\BalanceWalletIdValidator;
 use Tests\TestCase;
 
-class WalletIdValidatorTest extends TestCase
+class BalanceWalletIdValidatorTest extends TestCase
 {
-    private WalletIdValidator $walletIdValidator;
+    private BalanceWalletIdValidator $walletIdValidator;
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->walletIdValidator = new WalletIdValidator();
+        $this->walletIdValidator = new BalanceWalletIdValidator();
     }
 
 
