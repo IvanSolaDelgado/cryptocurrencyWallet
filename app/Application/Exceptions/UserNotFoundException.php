@@ -9,6 +9,6 @@ class UserNotFoundException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('User not found', Response::HTTP_BAD_REQUEST);
+        parent::__construct('User not found', Response::HTTP_NOT_FOUND);
     }
 }
