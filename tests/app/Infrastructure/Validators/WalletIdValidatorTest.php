@@ -2,7 +2,7 @@
 
 namespace Tests\app\Infrastructure\Validators;
 
-use App\Infrastructure\Validators\WalletIdValidator;
+use App\Infrastructure\Controllers\Validators\WalletIdValidator;
 use Tests\TestCase;
 
 class WalletIdValidatorTest extends TestCase

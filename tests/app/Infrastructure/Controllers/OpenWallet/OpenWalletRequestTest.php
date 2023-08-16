@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\app\Infrastructure\Http\Requests;
+namespace Tests\app\Infrastructure\Controller\OpenWallet;
 
 use App\Infrastructure\Controllers\OpenWallet\OpenWalletRequest;
 use Illuminate\Support\Facades\Validator;

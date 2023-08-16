@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\app\Infrastructure\Controller;
+namespace Tests\app\Infrastructure\Controller\OpenWallet;
 
 use App\Domain\DataSources\UserDataSource;
 use App\Domain\User;
+use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Cache;
 
 class OpenWalletControllerTest extends TestCase
 {
