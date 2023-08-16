@@ -7,12 +7,12 @@ use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
 use Illuminate\Support\Facades\Cache;
 
-class FileWalletDataSource implements WalletDataSource
+class CacheWalletDataSource implements WalletDataSource
 {
-    public function findById(string $wallet_id): ?Wallet
+    public function findById(string $walletId): ?Wallet
     {
-        if (Cache::has('wallet_' . $wallet_id)) {
-            return new Wallet($wallet_id);
+        if (Cache::has('wallet_' . $walletId)) {
+            return new Wallet($walletId);
         }
         return null;
     }
@@ -69,6 +69,12 @@ class FileWalletDataSource implements WalletDataSource
                 return 'wallet_' . $i;
             }
         }
+
         return null;
+    }
+
+    public function getWalletById(string $walletId): array
+    {
+        return Cache::get('wallet_' . $walletId);
     }
 }

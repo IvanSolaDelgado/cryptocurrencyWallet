@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\app\Application\DataSources;
+namespace Tests\app\Infrastructure\DataSources;
 
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\DataSources\WalletDataSource;
 use App\Domain\Wallet;
-use App\Infrastructure\Persistence\FileWalletDataSource;
+use App\Infrastructure\Persistence\CacheWalletDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Tests\TestCase;
@@ -20,7 +20,7 @@ class WalletDataSourceTest extends TestCase
     {
         parent::setUp();
 
-        $this->walletDataSource = new FileWalletDataSource();
+        $this->walletDataSource = new CacheWalletDataSource();
         $this->coinDataSource = Mockery::mock(CoinDataSource::class);
         $this->app->bind(CoinDataSource::class, function () {
             return $this->coinDataSource;
