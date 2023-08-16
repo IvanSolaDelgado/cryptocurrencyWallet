@@ -40,7 +40,7 @@ class OpenWalletServiceTest extends TestCase
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('User not found');
 
-        $this->openWalletService->createWallet('123');
+        $this->openWalletService->execute('123');
     }
 
     /**
@@ -51,7 +51,7 @@ class OpenWalletServiceTest extends TestCase
         $this->userDataSource->shouldReceive('findById')->with('1')->andReturn(new User('1'));
         $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn('wallet_1');
 
-        $this->openWalletService->createWallet('1');
+        $this->openWalletService->execute('1');
     }
 
     /**
@@ -65,6 +65,6 @@ class OpenWalletServiceTest extends TestCase
         $this->expectException(CacheFullException::class);
         $this->expectExceptionMessage('Cache is full');
 
-        $this->openWalletService->createWallet('2');
+        $this->openWalletService->execute('2');
     }
 }

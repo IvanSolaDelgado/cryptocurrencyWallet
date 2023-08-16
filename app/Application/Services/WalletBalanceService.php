@@ -20,7 +20,7 @@ class WalletBalanceService
     /**
      * @throws WalletNotFoundException
      */
-    public function getsBalance($walletId)
+    public function execute($walletId): float
     {
         if (is_null($this->walletDataSource->findById($walletId))) {
             throw new WalletNotFoundException();

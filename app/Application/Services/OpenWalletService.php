@@ -22,7 +22,7 @@ class OpenWalletService
      * @throws UserNotFoundException
      * @throws CacheFullException
      */
-    public function createWallet(string $userId): ?string
+    public function execute(string $userId): ?string
     {
         $user = $this->userDataSource->findById($userId);
         if (is_null($user)) {

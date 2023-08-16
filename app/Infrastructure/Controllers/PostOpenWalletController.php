@@ -19,7 +19,7 @@ class PostOpenWalletController extends BaseController
     public function __invoke(OpenWalletRequest $openWalletRequest, OpenWalletService $openWalletService): JsonResponse
     {
         $userId = $openWalletRequest->input('user_id');
-        $walletId = $openWalletService->createWallet($userId);
+        $walletId = $openWalletService->execute($userId);
 
         return response()->json([
             'description' => 'successful operation',
