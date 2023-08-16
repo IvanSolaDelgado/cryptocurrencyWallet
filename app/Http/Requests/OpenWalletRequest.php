@@ -9,10 +9,6 @@ use Illuminate\Http\JsonResponse;
 
 class OpenWalletRequest extends FormRequest
 {
-    /**
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [
