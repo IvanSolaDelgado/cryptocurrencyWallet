@@ -10,9 +10,4 @@ class User
     {
         $this->userId = $userId;
     }
-
-    public function getUserId(): string
-    {
-        return $this->userId;
-    }
 }

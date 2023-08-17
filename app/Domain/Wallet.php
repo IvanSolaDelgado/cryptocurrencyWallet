@@ -18,7 +18,7 @@ class Wallet
         return $this->walletId;
     }
 
-    public function getJsonData(): array
+    public function serializeData(): array
     {
         $attributes = get_object_vars($this);
         foreach ($attributes as &$attribute) {
