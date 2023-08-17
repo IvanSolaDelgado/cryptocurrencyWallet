@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\ApiServices;
+namespace App\Infrastructure\ApiClients;
 
-class CoinloreApiService
+class CoinloreApiClient
 {
     public function getCoinloreData(string $coinId): ?string
     {

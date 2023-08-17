@@ -4,13 +4,13 @@ namespace App\Infrastructure\Persistence;
 
 use App\Domain\Coin;
 use App\Domain\DataSources\CoinDataSource;
-use App\Infrastructure\ApiServices\CoinloreApiService;
+use App\Infrastructure\ApiClients\CoinloreApiClient;
 
 class ApiCoinDataSource implements CoinDataSource
 {
-    private CoinloreApiService $coinloreApiService;
+    private CoinloreApiClient $coinloreApiService;
 
-    public function __construct(CoinloreApiService $coinloreApiService)
+    public function __construct(CoinloreApiClient $coinloreApiService)
     {
         $this->coinloreApiService = $coinloreApiService;
     }

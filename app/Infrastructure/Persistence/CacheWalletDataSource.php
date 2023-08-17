@@ -63,7 +63,7 @@ class CacheWalletDataSource implements WalletDataSource
         for ($i = 0; $i <= 100; $i++) {
             if (!Cache::has('wallet_' . $i)) {
                 $wallet = new Wallet('wallet_' . $i);
-                $wallet = $wallet->getJsonData();
+                $wallet = $wallet->serializeData();
                 $wallet['BuyTimeAccumulatedValue'] = 0;
                 Cache::put('wallet_' . $i, $wallet);
                 return 'wallet_' . $i;

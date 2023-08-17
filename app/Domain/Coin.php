@@ -5,7 +5,6 @@ namespace App\Domain;
 class Coin
 {
     private string $coinId;
-
     private string $name;
     private string $symbol;
     private float $amount;
@@ -25,28 +24,28 @@ class Coin
         $this->valueUsd = $valueUsd;
     }
 
-    public function getJsonData()
+    public function getJsonData(): array
     {
-        $var = get_object_vars($this);
-        return $var;
+        $coinData = get_object_vars($this);
+        return $coinData;
     }
 
-    public function getId()
+    public function getId(): string
     {
         return $this->coinId;
     }
 
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }
 
-    public function setAmount(float $amount)
+    public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
 
-    public function getValueUsd()
+    public function getValueUsd(): float
     {
         return $this->valueUsd;
     }

@@ -6,8 +6,6 @@ class Wallet
 {
     private string $walletId;
     private array $coins;
-    private string $userId;
-
 
     public function __construct(string $walletId)
     {
@@ -20,7 +18,7 @@ class Wallet
         return $this->walletId;
     }
 
-    public function getJsonData(): array
+    public function serializeData(): array
     {
         $attributes = get_object_vars($this);
         foreach ($attributes as &$attribute) {
@@ -31,15 +29,5 @@ class Wallet
             }
         }
         return $attributes;
-    }
-
-    public function setCoins(array $coins): void
-    {
-        $this->coins = $coins;
-    }
-
-    public function getCoins(): array
-    {
-        return $this->coins;
     }
 }
