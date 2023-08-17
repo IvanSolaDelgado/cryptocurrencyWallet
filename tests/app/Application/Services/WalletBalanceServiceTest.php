@@ -48,6 +48,36 @@ class WalletBalanceServiceTest extends TestCase
     /**
      * @test
      */
+    public function getsZeroBalanceWhenWalletExistsAndIsEmpty()
+    {
+        $walletId = '0';
+        $walletCoins = [];
+        $walletBuyTimeAccumulatedValue = '0';
+
+        $this->walletDataSource
+            ->shouldReceive("findById")
+            ->with($walletId)
+            ->once()
+            ->andReturn(new Wallet('0'));
+        $this->walletDataSource
+            ->shouldReceive("getWalletById")
+            ->with($walletId)
+            ->once()
+            ->andReturn(
+                [
+                    'BuyTimeAccumulatedValue' => $walletBuyTimeAccumulatedValue,
+                    'coins' => $walletCoins
+                ]
+            );
+
+        $balance = $this->walletBalanceService->execute($walletId);
+
+        $this->assertEquals(0, $balance);
+    }
+
+    /**
+     * @test
+     */
     public function getsWalletBalanceIfWalletExists()
     {
         $coinId = '90';

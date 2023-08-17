@@ -44,6 +44,26 @@ class WalletCryptocurrenciesServiceTest extends TestCase
     /**
      * @test
      */
+    public function emptyCryptocurrenciesWhenWalletExistsAndIsEmpty()
+    {
+        $walletId = "0";
+        $coins = [];
+
+        $this->walletDataSource
+            ->shouldReceive("findById")
+            ->with("0")
+            ->andReturn(new Wallet($walletId));
+        $this->walletDataSource
+            ->shouldReceive('getWalletById')
+            ->with($walletId)
+            ->andReturn(['coins' => $coins]);
+
+        $this->assertEquals($coins, $this->walletCryptocurrenciesService->execute($walletId));
+    }
+
+    /**
+     * @test
+     */
     public function getsWalletCryptocurrenciesWhenWalletFound()
     {
         $walletId = "0";
