@@ -15,15 +15,6 @@ class CryptocurrenciesWalletIdValidatorTest extends TestCase
         $this->walletIdValidator = new CryptocurrenciesWalletIdValidator();
     }
 
-
-    /**
-     * @test
-     */
-    public function validWalletIdIfIdIsInteger()
-    {
-        $this->assertTrue($this->walletIdValidator->validateWalletId(123));
-    }
-
     /**
      * @test
      */
@@ -78,5 +69,13 @@ class CryptocurrenciesWalletIdValidatorTest extends TestCase
             'Error occurred during wallet id validation.',
             $this->walletIdValidator->getMessage($walletId)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function validWalletIdIfIdIsInteger()
+    {
+        $this->assertTrue($this->walletIdValidator->validateWalletId(123));
     }
 }

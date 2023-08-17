@@ -2,7 +2,6 @@
 
 namespace Tests\app\Infrastructure\DataSources;
 
-use App\Domain\Coin;
 use App\Infrastructure\ApiServices\CoinloreApiService;
 use App\Infrastructure\Persistence\ApiCoinDataSource;
 use Mockery;
@@ -41,7 +40,25 @@ class CoinDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function findCoinWhenCoinIdExists()
+    public function doesNotGetUsdValueWhenCoinIdDoesNotExist()
+    {
+        $coinDataSource = new ApiCoinDataSource($this->coinloreApiService);
+        $coinId = 'invalid_coin_id';
+
+        $this->coinloreApiService
+            ->shouldReceive('getCoinloreData')
+            ->with($coinId)
+            ->andReturn(null);
+
+        $usdValue = $coinDataSource->getUsdValue($coinId);
+
+        $this->assertNull($usdValue);
+    }
+
+    /**
+     * @test
+     */
+    public function findsCoinWhenCoinIdExists()
     {
         $coinDataSource = new ApiCoinDataSource($this->coinloreApiService);
         $coinId = '90';
@@ -65,25 +82,7 @@ class CoinDataSourceTest extends TestCase
     /**
      * @test
      */
-    public function doesNotGetUsdValueWhenCoinIdDoesNotExist()
-    {
-        $coinDataSource = new ApiCoinDataSource($this->coinloreApiService);
-        $coinId = 'invalid_coin_id';
-
-        $this->coinloreApiService
-            ->shouldReceive('getCoinloreData')
-            ->with($coinId)
-            ->andReturn(null);
-
-        $usdValue = $coinDataSource->getUsdValue($coinId);
-
-        $this->assertNull($usdValue);
-    }
-
-    /**
-     * @test
-     */
-    public function getUsdValueWhenCoinIdExists()
+    public function getsUsdValueWhenCoinIdExists()
     {
         $coinDataSource = new ApiCoinDataSource($this->coinloreApiService);
         $coinId = '90';

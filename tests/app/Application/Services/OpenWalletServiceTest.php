@@ -34,8 +34,13 @@ class OpenWalletServiceTest extends TestCase
      */
     public function userNotFoundIfUserDoesNotExist()
     {
-        $this->userDataSource->shouldReceive('findById')->with('123')->andReturnNull();
-        $this->walletDataSource->shouldReceive('saveWalletInCache')->never();
+        $this->userDataSource
+            ->shouldReceive('findById')
+            ->with('123')
+            ->andReturnNull();
+        $this->walletDataSource
+            ->shouldReceive('saveWalletInCache')
+            ->never();
 
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('User not found');
@@ -46,25 +51,39 @@ class OpenWalletServiceTest extends TestCase
     /**
      * @test
      */
-    public function createsWalletWhenUserExistsAndCacheIsNotFull()
-    {
-        $this->userDataSource->shouldReceive('findById')->with('1')->andReturn(new User('1'));
-        $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn('wallet_1');
-
-        $this->openWalletService->execute('1');
-    }
-
-    /**
-     * @test
-     */
     public function throwsErrorIfCacheIsFull()
     {
-        $this->userDataSource->shouldReceive('findById')->with('2')->andReturn(new User('2'));
-        $this->walletDataSource->shouldReceive('saveWalletInCache')->withNoArgs()->once()->andReturn(null);
+        $this->userDataSource
+            ->shouldReceive('findById')
+            ->with('2')
+            ->andReturn(new User('2'));
+        $this->walletDataSource
+            ->shouldReceive('saveWalletInCache')
+            ->withNoArgs()
+            ->once()
+            ->andReturn(null);
 
         $this->expectException(CacheFullException::class);
         $this->expectExceptionMessage('Cache is full');
 
         $this->openWalletService->execute('2');
+    }
+
+    /**
+     * @test
+     */
+    public function createsWalletWhenUserExistsAndCacheIsNotFull()
+    {
+        $this->userDataSource
+            ->shouldReceive('findById')
+            ->with('1')
+            ->andReturn(new User('1'));
+        $this->walletDataSource
+            ->shouldReceive('saveWalletInCache')
+            ->withNoArgs()
+            ->once()
+            ->andReturn('wallet_1');
+
+        $this->openWalletService->execute('1');
     }
 }

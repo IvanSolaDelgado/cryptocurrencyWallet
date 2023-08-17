@@ -15,15 +15,6 @@ class BalanceWalletIdValidatorTest extends TestCase
         $this->walletIdValidator = new BalanceWalletIdValidator();
     }
 
-
-    /**
-     * @test
-     */
-    public function validWalletIdIfIdIsInteger()
-    {
-        $this->assertTrue($this->walletIdValidator->validateWalletId(123));
-    }
-
     /**
      * @test
      */
@@ -78,5 +69,13 @@ class BalanceWalletIdValidatorTest extends TestCase
             'Error occurred during wallet id validation.',
             $this->walletIdValidator->getMessage($walletId)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function validWalletIdIfIdIsInteger()
+    {
+        $this->assertTrue($this->walletIdValidator->validateWalletId(123));
     }
 }
