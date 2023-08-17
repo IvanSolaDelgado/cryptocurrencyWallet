@@ -18,6 +18,11 @@ class Wallet
         return $this->walletId;
     }
 
+    public function addCoin(Coin $coin): void
+    {
+        $this->coins[] = $coin;
+    }
+
     public function serializeData(): array
     {
         $attributes = get_object_vars($this);
