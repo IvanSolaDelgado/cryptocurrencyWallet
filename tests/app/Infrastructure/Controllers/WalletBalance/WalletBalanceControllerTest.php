@@ -4,7 +4,7 @@ namespace Tests\app\Infrastructure\Controllers\WalletBalance;
 
 use App\Domain\DataSources\CoinDataSource;
 use App\Domain\Wallet;
-use App\Infrastructure\ApiServices\CoinloreApiService;
+use App\Infrastructure\ApiClients\CoinloreApiClient;
 use App\Infrastructure\Persistence\ApiCoinDataSource;
 use Illuminate\Support\Facades\Cache;
 use Mockery;
@@ -13,14 +13,14 @@ use Tests\TestCase;
 
 class WalletBalanceControllerTest extends TestCase
 {
-    private CoinloreApiService $coinloreApiService;
+    private CoinloreApiClient $coinloreApiService;
     private ApiCoinDataSource $apiCoinDataSource;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->coinloreApiService = Mockery::mock(CoinloreApiService::class);
+        $this->coinloreApiService = Mockery::mock(CoinloreApiClient::class);
         $this->apiCoinDataSource = new ApiCoinDataSource($this->coinloreApiService);
         $this->app->bind(CoinDataSource::class, function () {
             return $this->apiCoinDataSource;

@@ -3,20 +3,20 @@
 namespace Tests\app\Infrastructure\DataSources;
 
 use App\Domain\Coin;
-use App\Infrastructure\ApiServices\CoinloreApiService;
+use App\Infrastructure\ApiClients\CoinloreApiClient;
 use App\Infrastructure\Persistence\ApiCoinDataSource;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class CoinDataSourceTest extends TestCase
+class ApiCoinDataSourceTest extends TestCase
 {
-    private CoinloreApiService $coinloreApiService;
+    private CoinloreApiClient $coinloreApiService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->coinloreApiService = Mockery::mock(CoinloreApiService::class);
+        $this->coinloreApiService = Mockery::mock(CoinloreApiClient::class);
     }
 
     /**
