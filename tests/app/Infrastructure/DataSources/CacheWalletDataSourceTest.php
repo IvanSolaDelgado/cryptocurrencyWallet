@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Cache;
 use Mockery;
 use Tests\TestCase;
 
-class WalletDataSourceTest extends TestCase
+class CacheWalletDataSourceTest extends TestCase
 {
     private CoinDataSource $coinDataSource;
     private WalletDataSource $walletDataSource;
