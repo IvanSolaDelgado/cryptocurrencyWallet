@@ -28,9 +28,9 @@ class OpenWalletControllerTest extends TestCase
     public function throwsErrorWhenUserDoesNotExist()
     {
         $this->userDataSource
-        ->expects("findById")
-        ->with("1")
-        ->andReturn(null);
+            ->expects("findById")
+            ->with("1")
+            ->andReturn(null);
 
         $response = $this->post('api/wallet/open', ["user_id" => "1"]);
 
@@ -47,7 +47,8 @@ class OpenWalletControllerTest extends TestCase
             ->expects("findById")
             ->with("1")
             ->andReturn(new User("1"));
-        Cache::shouldReceive('has')->andReturn(true);
+        Cache::shouldReceive('has')
+            ->andReturn(true);
 
         $response = $this->post('api/wallet/open', ["user_id" => "1"]);
 
@@ -64,7 +65,8 @@ class OpenWalletControllerTest extends TestCase
             ->expects("findById")
             ->with("0")
             ->andReturn(new User("0"));
-        Cache::shouldReceive('has')->andReturn(false);
+        Cache::shouldReceive('has')
+            ->andReturn(false);
         Cache::shouldReceive('put')
             ->once()
             ->with('wallet_0', Mockery::type('array'));

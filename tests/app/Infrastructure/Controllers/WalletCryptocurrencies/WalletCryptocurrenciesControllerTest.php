@@ -17,7 +17,8 @@ class WalletCryptocurrenciesControllerTest extends TestCase
     {
         $wallet = new Wallet('0');
 
-        Cache::shouldReceive('has')->andReturn(false);
+        Cache::shouldReceive('has')
+            ->andReturn(false);
 
         $response = $this->get('api/wallet/' . $wallet->getWalletId());
 
@@ -39,7 +40,8 @@ class WalletCryptocurrenciesControllerTest extends TestCase
         ];
         $wallet = new Wallet($walletId);
 
-        Cache::shouldReceive('has')->andReturn(true);
+        Cache::shouldReceive('has')
+            ->andReturn(true);
         Cache::shouldReceive('get')
             ->with('wallet_' . $walletId)
             ->andReturn(['BuyTimeAccumulatedValue' => 10, 'coins' => $walletCoins]);

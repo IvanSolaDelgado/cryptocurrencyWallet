@@ -60,7 +60,10 @@ class SellCoinControllerTest extends TestCase
             ->expects("findById")
             ->with("coin_id_value", "1")
             ->andReturn($coin);
-        Cache::shouldReceive('has')->once()->with('wallet_0')->andReturn(false);
+        Cache::shouldReceive('has')
+            ->once()
+            ->with('wallet_0')
+            ->andReturn(false);
 
         $response = $this->post(
             'api/coin/sell',
@@ -90,15 +93,24 @@ class SellCoinControllerTest extends TestCase
             ->expects("findById")
             ->with("coin_id_value", "1")
             ->andReturn($coin);
-        Cache::shouldReceive('has')->once()->with('wallet_0')->andReturn(true);
-        Cache::shouldReceive('has')->once()->with('wallet_0')->andReturn(true);
-        Cache::shouldReceive('get')->once()->with("wallet_0")->andReturn(
-            [
+        Cache::shouldReceive('has')
+            ->once()
+            ->with('wallet_0')
+            ->andReturn(true);
+        Cache::shouldReceive('has')
+            ->once()
+            ->with('wallet_0')
+            ->andReturn(true);
+        Cache::shouldReceive('get')
+            ->once()
+            ->with("wallet_0")
+            ->andReturn(
+                [
                 'walletId' => '0',
                 'BuyTimeAccumulatedValue' => 0,
                 'coins' => [],
-            ]
-        );
+                ]
+            );
         Cache::shouldReceive('put')
             ->with("wallet_0", Mockery::type('array'));
 

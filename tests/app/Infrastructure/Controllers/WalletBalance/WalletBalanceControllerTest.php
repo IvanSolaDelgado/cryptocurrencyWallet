@@ -58,8 +58,14 @@ class WalletBalanceControllerTest extends TestCase
         Cache::shouldReceive('has')->andReturn(true);
         Cache::shouldReceive('get')
             ->with('wallet_' . $walletId)
-            ->andReturn(['BuyTimeAccumulatedValue' => $coinBuyTimeAccumulatedValue,
-                'coins' => [['coinId' => $coinId, 'amount' => $coinAmount]]]);
+            ->andReturn(
+                [
+                    'BuyTimeAccumulatedValue' => $coinBuyTimeAccumulatedValue,
+                    'coins' => [
+                        ['coinId' => $coinId, 'amount' => $coinAmount]
+                    ]
+                ]
+            );
         $this->coinloreApiService->shouldReceive("getCoinloreData")
             ->with($coinId)
             ->andReturn('[{"id": "90", "name": "Bitcoin", "symbol": "BTC", "price_usd": "20"}]');
